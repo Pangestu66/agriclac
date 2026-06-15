@@ -1,0 +1,9 @@
+backend-express/
+backend-worker/
+node_modules/
+.env
+.dev.vars
+agricalc.db
+*.db
+*.db-shm
+*.db-wal

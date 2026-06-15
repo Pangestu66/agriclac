@@ -1,5 +1,6 @@
 /**
  * AgriCalc - Core Application Coordinator & Dashboard Controller
+ * With Backend API Integration (Auth + Sync)
  */
 
 import { CROPS, FERTILIZERS, GENERAL_METRICS } from "./db.js";
@@ -8,8 +9,118 @@ import { initFertilizerModule } from "./modules/fertilizer.js";
 import { initPesticideModule } from "./modules/pesticide.js";
 import { initEconomicsModule } from "./modules/economics.js";
 
+// ─── API Service Layer ───────────────────────────────────────
+class ApiService {
+  constructor() {
+    this.baseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:8787/api'
+      : 'https://agricalc-api.agricalc.workers.dev/api';
+    this.token = localStorage.getItem('agricalc_token') || null;
+  }
+
+  get headers() {
+    const h = { 'Content-Type': 'application/json' };
+    if (this.token) h['Authorization'] = `Bearer ${this.token}`;
+    return h;
+  }
+
+  async request(endpoint, options = {}) {
+    try {
+      const resp = await fetch(`${this.baseUrl}${endpoint}`, {
+        ...options,
+        headers: { ...this.headers, ...(options.headers || {}) }
+      });
+      const data = await resp.json();
+      if (!resp.ok) {
+        throw new Error(data.error || `HTTP ${resp.status}`);
+      }
+      return data;
+    } catch (err) {
+      // Network error — allow offline mode
+      if (err.message === 'Failed to fetch') {
+        console.warn('[API] Offline mode — using localStorage');
+        return null;
+      }
+      throw err;
+    }
+  }
+
+  // Auth
+  async register(username, email, password) {
+    const data = await this.request('/auth/register', {
+      method: 'POST',
+      body: JSON.stringify({ username, email, password })
+    });
+    if (data && data.token) {
+      this.token = data.token;
+      localStorage.setItem('agricalc_token', data.token);
+      localStorage.setItem('agricalc_user', JSON.stringify(data.user));
+    }
+    return data;
+  }
+
+  async login(email, password) {
+    const data = await this.request('/auth/login', {
+      method: 'POST',
+      body: JSON.stringify({ email, password })
+    });
+    if (data && data.token) {
+      this.token = data.token;
+      localStorage.setItem('agricalc_token', data.token);
+      localStorage.setItem('agricalc_user', JSON.stringify(data.user));
+    }
+    return data;
+  }
+
+  logout() {
+    this.token = null;
+    localStorage.removeItem('agricalc_token');
+    localStorage.removeItem('agricalc_user');
+  }
+
+  getUser() {
+    const cached = localStorage.getItem('agricalc_user');
+    if (cached) {
+      try { return JSON.parse(cached); } catch(e) { return null; }
+    }
+    return null;
+  }
+
+  isLoggedIn() {
+    return !!this.token;
+  }
+
+  // Calculations sync
+  async syncCalculations(calculations) {
+    if (!this.isLoggedIn()) return null;
+    return this.request('/calculations/sync', {
+      method: 'POST',
+      body: JSON.stringify({ calculations })
+    });
+  }
+
+  async getCalculations() {
+    if (!this.isLoggedIn()) return null;
+    return this.request('/calculations');
+  }
+
+  async deleteCalculation(id) {
+    if (!this.isLoggedIn()) return null;
+    return this.request(`/calculations/${id}`, { method: 'DELETE' });
+  }
+
+  // Market prices
+  async getMarketPrices(region) {
+    const qs = region ? `?region=${encodeURIComponent(region)}` : '';
+    return this.request(`/market/prices${qs}`);
+  }
+}
+
+// ─── Main Application ───────────────────────────────────────
 class AgriCalcApp {
   constructor() {
+    this.api = new ApiService();
+
     this.state = {
       theme: "dark",
       language: "id", // "id" or "en"
@@ -36,7 +147,12 @@ class AgriCalcApp {
         rainProb: "Peluang Hujan",
         optimumTime: "Waktu Semprot Optimum",
         optimumValue: "Pagi (06:00 - 08:30)",
-        clearHistory: "Bersihkan Riwayat"
+        clearHistory: "Bersihkan Riwayat",
+        login: "Masuk",
+        register: "Daftar",
+        logout: "Keluar",
+        synced: "Tersinkronkan ☁️",
+        guest: "Mode Tamu"
       },
       en: {
         appTitle: "AgriCalc",
@@ -54,7 +170,12 @@ class AgriCalcApp {
         rainProb: "Rain Probability",
         optimumTime: "Optimum Spray Time",
         optimumValue: "Morning (06:00 - 08:30)",
-        clearHistory: "Clear History"
+        clearHistory: "Clear History",
+        login: "Login",
+        register: "Register",
+        logout: "Logout",
+        synced: "Synced ☁️",
+        guest: "Guest Mode"
       }
     };
 
@@ -68,11 +189,20 @@ class AgriCalcApp {
     // Bind global header switches
     this.bindGlobalEvents();
 
+    // Setup auth UI
+    this.bindAuthEvents();
+    this.updateAuthUI();
+
     // Render navigation sidebar items
     this.renderNavigation();
 
     // Load active tab
     this.switchTab(this.state.activeTab);
+
+    // If logged in, sync from server
+    if (this.api.isLoggedIn()) {
+      this.pullFromServer();
+    }
   }
 
   loadState() {
@@ -120,8 +250,6 @@ class AgriCalcApp {
       document.body.setAttribute("data-theme", this.state.theme);
       this.saveState();
       
-      // If we are currently in a tab that has a canvas (e.g. population) or SVG chart (economics), 
-      // trigger a redraw by re-initializing that tab.
       if (this.state.activeTab !== "dashboard") {
         this.switchTab(this.state.activeTab);
       }
@@ -133,9 +261,9 @@ class AgriCalcApp {
       this.state.language = e.target.value;
       this.saveState();
       
-      // Refresh UI elements
       this.updateGlobalTexts();
       this.renderNavigation();
+      this.updateAuthUI();
       
       if (this.state.activeTab === "dashboard") {
         this.renderDashboard();
@@ -143,6 +271,224 @@ class AgriCalcApp {
         this.switchTab(this.state.activeTab);
       }
     });
+  }
+
+  // ─── Auth Events ──────────────────────────────────────────
+  bindAuthEvents() {
+    const modal = document.getElementById('auth-modal');
+    const loginBtn = document.getElementById('btn-login');
+    const closeBtn = document.getElementById('auth-modal-close');
+    const guestBtn = document.getElementById('btn-guest');
+    const form = document.getElementById('auth-form');
+    const tabs = modal.querySelectorAll('.modal-tab');
+
+    this.authMode = 'login';
+
+    // Open modal
+    loginBtn?.addEventListener('click', () => {
+      modal.style.display = 'flex';
+    });
+
+    // Close modal
+    closeBtn?.addEventListener('click', () => {
+      modal.style.display = 'none';
+      this.clearAuthError();
+    });
+
+    // Click outside to close
+    modal?.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.style.display = 'none';
+        this.clearAuthError();
+      }
+    });
+
+    // Guest mode
+    guestBtn?.addEventListener('click', () => {
+      modal.style.display = 'none';
+    });
+
+    // Tab switching (login/register)
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        const mode = tab.getAttribute('data-mode');
+        this.authMode = mode;
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        const usernameGroup = document.getElementById('fg-username');
+        const submitBtn = document.getElementById('auth-submit');
+        const isIndo = this.state.language === 'id';
+
+        if (mode === 'register') {
+          usernameGroup.style.display = 'flex';
+          submitBtn.querySelector('.btn-text').textContent = isIndo ? 'Daftar' : 'Register';
+        } else {
+          usernameGroup.style.display = 'none';
+          submitBtn.querySelector('.btn-text').textContent = isIndo ? 'Masuk' : 'Login';
+        }
+        this.clearAuthError();
+      });
+    });
+
+    // Form submit
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await this.handleAuthSubmit();
+    });
+  }
+
+  async handleAuthSubmit() {
+    const email = document.getElementById('auth-email').value.trim();
+    const password = document.getElementById('auth-password').value;
+    const username = document.getElementById('auth-username').value.trim();
+    const submitBtn = document.getElementById('auth-submit');
+    const spinner = submitBtn.querySelector('.btn-spinner');
+    const btnText = submitBtn.querySelector('.btn-text');
+
+    // Show loading
+    spinner.style.display = 'inline-block';
+    btnText.style.display = 'none';
+    submitBtn.disabled = true;
+
+    try {
+      let result;
+      if (this.authMode === 'register') {
+        if (!username || username.length < 3) {
+          throw new Error(this.state.language === 'id' ? 'Username minimal 3 karakter' : 'Username must be at least 3 characters');
+        }
+        result = await this.api.register(username, email, password);
+      } else {
+        result = await this.api.login(email, password);
+      }
+
+      if (result) {
+        // Success — close modal & update UI
+        document.getElementById('auth-modal').style.display = 'none';
+        this.updateAuthUI();
+        this.showSyncIndicator('success', this.state.language === 'id' ? '✅ Berhasil masuk!' : '✅ Login successful!');
+
+        // Sync local history to server
+        if (this.state.history.length > 0) {
+          await this.pushToServer();
+        }
+        // Then pull server history
+        await this.pullFromServer();
+      }
+    } catch (err) {
+      this.showAuthError(err.message);
+    } finally {
+      spinner.style.display = 'none';
+      btnText.style.display = 'inline';
+      submitBtn.disabled = false;
+    }
+  }
+
+  showAuthError(msg) {
+    const errorEl = document.getElementById('auth-error');
+    errorEl.textContent = msg;
+    errorEl.style.display = 'block';
+  }
+
+  clearAuthError() {
+    const errorEl = document.getElementById('auth-error');
+    if (errorEl) {
+      errorEl.style.display = 'none';
+      errorEl.textContent = '';
+    }
+  }
+
+  updateAuthUI() {
+    const authSection = document.getElementById('auth-section');
+    const dict = this.translations[this.state.language];
+
+    if (this.api.isLoggedIn()) {
+      const user = this.api.getUser();
+      const initial = (user?.username || 'U').charAt(0).toUpperCase();
+      authSection.innerHTML = `
+        <div class="user-badge">
+          <div class="user-avatar">${initial}</div>
+          <div class="user-info">
+            <span class="user-name">${user?.username || 'User'}</span>
+            <span class="user-sync-status">${dict.synced}</span>
+          </div>
+          <button class="btn-logout" id="btn-logout-action" title="${dict.logout}">${dict.logout}</button>
+        </div>
+      `;
+
+      // Bind logout
+      document.getElementById('btn-logout-action')?.addEventListener('click', () => {
+        this.api.logout();
+        this.updateAuthUI();
+        this.showSyncIndicator('success', this.state.language === 'id' ? '👋 Berhasil keluar' : '👋 Logged out');
+      });
+    } else {
+      authSection.innerHTML = `
+        <button class="btn-auth" id="btn-login" title="${dict.login}">
+          <span class="auth-icon">👤</span>
+          <span class="auth-label">${dict.login}</span>
+        </button>
+      `;
+      // Re-bind login button
+      document.getElementById('btn-login')?.addEventListener('click', () => {
+        document.getElementById('auth-modal').style.display = 'flex';
+      });
+    }
+  }
+
+  // ─── Sync Operations ─────────────────────────────────────
+  async pushToServer() {
+    if (!this.api.isLoggedIn() || this.state.history.length === 0) return;
+
+    this.showSyncIndicator('syncing', this.state.language === 'id' ? '🔄 Menyinkronkan...' : '🔄 Syncing...');
+
+    try {
+      await this.api.syncCalculations(this.state.history);
+      this.showSyncIndicator('success', this.state.language === 'id' ? '✅ Tersinkronkan' : '✅ Synced');
+    } catch (err) {
+      console.error('[Sync Push Error]', err);
+      this.showSyncIndicator('error', this.state.language === 'id' ? '❌ Gagal sinkronisasi' : '❌ Sync failed');
+    }
+  }
+
+  async pullFromServer() {
+    if (!this.api.isLoggedIn()) return;
+
+    try {
+      const data = await this.api.getCalculations();
+      if (data && data.calculations && data.calculations.length > 0) {
+        // Merge server calculations with local (dedup by id)
+        const localIds = new Set(this.state.history.map(h => h.id));
+        const serverNew = data.calculations.filter(c => !localIds.has(c.id));
+        if (serverNew.length > 0) {
+          this.state.history = [...this.state.history, ...serverNew]
+            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+            .slice(0, 20);
+          this.saveState();
+          if (this.state.activeTab === 'dashboard') {
+            this.renderDashboard();
+          }
+        }
+      }
+    } catch (err) {
+      console.error('[Sync Pull Error]', err);
+    }
+  }
+
+  showSyncIndicator(type, text) {
+    const indicator = document.getElementById('sync-indicator');
+    indicator.className = `sync-indicator ${type}`;
+    indicator.innerHTML = `
+      <span class="sync-icon">${type === 'syncing' ? '🔄' : type === 'success' ? '✅' : '❌'}</span>
+      <span class="sync-text">${text}</span>
+    `;
+    indicator.style.display = 'flex';
+    
+    if (type !== 'syncing') {
+      setTimeout(() => {
+        indicator.style.display = 'none';
+      }, 3000);
+    }
   }
 
   updateGlobalTexts() {
@@ -220,11 +566,24 @@ class AgriCalcApp {
       this.state.history.pop();
     }
     this.saveState();
+
+    // Push to server if logged in
+    if (this.api.isLoggedIn()) {
+      this.pushToServer();
+    }
   }
 
   deleteCalculation(id) {
     this.state.history = this.state.history.filter(c => c.id !== id);
     this.saveState();
+
+    // Delete from server too
+    if (this.api.isLoggedIn()) {
+      this.api.deleteCalculation(id).catch(err => {
+        console.error('[Delete Server Error]', err);
+      });
+    }
+
     if (this.state.activeTab === "dashboard") {
       this.renderDashboard();
     }
@@ -330,6 +689,10 @@ class AgriCalcApp {
             <div class="stat-item">
               <span class="stat-lbl">Lahan Terakhir Mapped</span>
               <span class="stat-val">${this.getLastMappedArea()}</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-lbl">Status Akun</span>
+              <span class="stat-val">${this.api.isLoggedIn() ? (dict.synced) : (dict.guest)}</span>
             </div>
           </div>
         </div>

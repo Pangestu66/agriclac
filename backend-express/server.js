@@ -31,12 +31,12 @@ app.use('/api/calculations', calculationsRoutes);
 app.use('/api/market', marketRoutes);
 
 // ─── Serve Static Frontend ──────────────────────────────────
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '..')));
 
 // SPA fallback — always serve index.html for non-API routes
 app.get('*', (req, res) => {
   if (!req.path.startsWith('/api')) {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, '..', 'index.html'));
   } else {
     res.status(404).json({ error: 'API endpoint not found' });
   }
@@ -61,7 +61,7 @@ async function start() {
 
     app.listen(PORT, () => {
       console.log(`\n🚜 AgriCalc Server running on http://localhost:${PORT}`);
-      console.log(`📁 Serving frontend from ./public/`);
+      console.log(`📁 Serving frontend from the root directory`);
       console.log(`🔌 API available at http://localhost:${PORT}/api\n`);
     });
   } catch (err) {

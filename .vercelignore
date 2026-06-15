@@ -1,9 +1,0 @@
-package.json
-package-lock.json
-server.js
-database/
-backend-worker/
-.env
-.dev.vars
-agricalc.db
-*.db

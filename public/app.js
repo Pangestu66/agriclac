@@ -12,7 +12,9 @@ import { initEconomicsModule } from "./modules/economics.js";
 // ─── API Service Layer ───────────────────────────────────────
 class ApiService {
   constructor() {
-    this.baseUrl = window.location.origin + '/api';
+    this.baseUrl = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+      ? 'http://localhost:8787/api'
+      : 'https://agricalc-api.pangestu66.workers.dev/api';
     this.token = localStorage.getItem('agricalc_token') || null;
   }
 

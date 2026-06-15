@@ -1,0 +1,17 @@
+{
+  "name": "agricalc-api-worker",
+  "version": "1.0.0",
+  "description": "AgriCalc API hosted on Cloudflare Workers",
+  "main": "src/index.js",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.43.4",
+    "hono": "^4.4.6"
+  },
+  "devDependencies": {
+    "wrangler": "^3.60.0"
+  }
+}

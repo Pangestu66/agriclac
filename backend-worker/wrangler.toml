@@ -1,0 +1,7 @@
+name = "agricalc-api"
+main = "src/index.js"
+compatibility_date = "2024-05-02"
+
+# Local / Production variables can also be set here if public.
+# Secrets (like JWT_SECRET, SUPABASE_ANON_KEY) will be stored in .dev.vars for local development 
+# and added via `wrangler secret put` or the Cloudflare dashboard for production.

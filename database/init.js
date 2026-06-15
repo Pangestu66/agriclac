@@ -5,7 +5,18 @@
 const Database = require('better-sqlite3');
 const path = require('path');
 
-const DB_PATH = path.join(__dirname, '..', 'agricalc.db');
+const fs = require('fs');
+
+const DB_DIR = process.env.NODE_ENV === 'production'
+  ? '/opt/render/project/src/data'
+  : path.join(__dirname, '..');
+
+// Ensure database directory exists
+if (!fs.existsSync(DB_DIR)) {
+  fs.mkdirSync(DB_DIR, { recursive: true });
+}
+
+const DB_PATH = path.join(DB_DIR, 'agricalc.db');
 
 let db;
 

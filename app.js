@@ -1,6 +1,6 @@
 /**
  * AgriCalc - Core Application Coordinator & Dashboard Controller
- * With Backend API Integration (Auth + Sync)
+ * Decoupled Frontend Version (Root level)
  */
 
 import { CROPS, FERTILIZERS, GENERAL_METRICS } from "./db.js";

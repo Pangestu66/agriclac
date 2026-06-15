@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: agricalc
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PORT
+        value: 3000
+    disk:
+      name: agricalc-data
+      mountPath: /opt/render/project/src/data
+      sizeGB: 1

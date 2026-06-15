@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="AgriCalc - Kalkulator pertanian modern untuk menghitung populasi tanaman, dosis pupuk hara NPK, kalibrasi nozzle semprot pestisida, dan kelayakan usahatani (BEP/ROI).">
+  <title>AgriCalc - Kalkulator Pertanian Modern Presisi</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="brand-section">
+      <div class="logo-badge">🚜</div>
+      <div class="brand-text">
+        <h1 id="app-title">AgriCalc</h1>
+        <p id="app-tagline">Kalkulator Pertanian Modern</p>
+      </div>
+    </div>
+    
+    <div class="header-controls">
+      <!-- Theme Switcher -->
+      <div class="theme-switch-wrapper" title="Ubah Tema / Toggle Theme">
+        <span class="switch-icon">🌙</span>
+        <label class="switch" for="theme-toggle">
+          <input type="checkbox" id="theme-toggle">
+          <span class="slider"></span>
+        </label>
+        <span class="switch-icon">☀️</span>
+      </div>
+
+      <!-- Language Selector -->
+      <select id="lang-select" class="lang-dropdown" title="Pilih Bahasa / Select Language">
+        <option value="id" selected>Bahasa Indonesia</option>
+        <option value="en">English (US)</option>
+      </select>
+    </div>
+  </header>
+
+  <!-- Main Grid Layout -->
+  <div class="app-container">
+    
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar-nav" aria-label="Navigasi Utama">
+      <ul class="nav-list" id="nav-list">
+        <!-- Renders dynamically from app.js -->
+      </ul>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="content-area" id="main-content" aria-live="polite">
+      <!-- Renders dynamically from app.js based on activeTab -->
+    </main>
+
+  </div>
+
+  <!-- Main ES6 JavaScript Entry -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>

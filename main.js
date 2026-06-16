@@ -186,6 +186,13 @@ class AgriCalcApp {
     // Load local storage preferences
     this.loadState();
     
+    // Check if query parameters specify a tab (e.g. from landing page quick links)
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    if (tabParam && ['dashboard', 'population', 'fertilizer', 'pesticide', 'economics'].includes(tabParam)) {
+      this.state.activeTab = tabParam;
+    }
+    
     // Bind global header switches
     this.bindGlobalEvents();
 

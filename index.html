@@ -3,117 +3,217 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="AgriCalc - Kalkulator pertanian modern untuk menghitung populasi tanaman, dosis pupuk hara NPK, kalibrasi nozzle semprot pestisida, dan kelayakan usahatani (BEP/ROI).">
-  <title>AgriCalc - Kalkulator Pertanian Modern Presisi</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="description" content="AgriCalc - Kalkulator pertanian modern presisi untuk kelayakan budidaya, dosis hara pupuk NPK, kalibrasi nozzle semprot, dan populasi jarak tanam.">
+  <title>AgriCalc - Solusi Pertanian Presisi Modern</title>
+  <link rel="stylesheet" href="landing.css">
 </head>
 <body>
 
-  <!-- App Header -->
+  <!-- App Header / Navigation -->
   <header class="app-header">
-    <div class="brand-section">
+    <a href="index.html" class="brand-section">
       <div class="logo-badge">🚜</div>
       <div class="brand-text">
-        <h1 id="app-title">AgriCalc</h1>
-        <p id="app-tagline">Kalkulator Pertanian Modern</p>
+        <h1>AgriCalc</h1>
+        <p>Pertanian Presisi Modern</p>
       </div>
-    </div>
+    </a>
     
-    <div class="header-controls">
-      <!-- Theme Switcher -->
-      <div class="theme-switch-wrapper" title="Ubah Tema / Toggle Theme">
-        <span class="switch-icon">🌙</span>
-        <label class="switch" for="theme-toggle">
-          <input type="checkbox" id="theme-toggle">
-          <span class="slider"></span>
-        </label>
-        <span class="switch-icon">☀️</span>
-      </div>
-
-      <!-- Language Selector -->
-      <select id="lang-select" class="lang-dropdown" title="Pilih Bahasa / Select Language">
-        <option value="id" selected>🇮🇩 ID</option>
-        <option value="en">🇺🇸 EN</option>
-      </select>
-
-      <!-- Auth / User Section -->
-      <div class="auth-section" id="auth-section">
-        <button class="btn-auth" id="btn-login" title="Masuk / Login">
-          <span class="auth-icon">👤</span>
-          <span class="auth-label">Masuk</span>
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- Auth Modal Overlay -->
-  <div class="modal-overlay" id="auth-modal" style="display:none;">
-    <div class="modal-card glass-panel">
-      <button class="modal-close" id="auth-modal-close">&times;</button>
-      
-      <div class="modal-tabs">
-        <button class="modal-tab active" data-mode="login">Masuk</button>
-        <button class="modal-tab" data-mode="register">Daftar</button>
-      </div>
-
-      <form id="auth-form" autocomplete="on">
-        <!-- Username (register only) -->
-        <div class="form-group" id="fg-username" style="display:none;">
-          <label for="auth-username">Username</label>
-          <input type="text" id="auth-username" placeholder="min. 3 karakter" autocomplete="username" minlength="3">
-        </div>
-
-        <div class="form-group">
-          <label for="auth-email">Email</label>
-          <input type="email" id="auth-email" placeholder="contoh@email.com" autocomplete="email" required>
-        </div>
-
-        <div class="form-group">
-          <label for="auth-password">Password</label>
-          <input type="password" id="auth-password" placeholder="min. 6 karakter" autocomplete="current-password" minlength="6" required>
-        </div>
-
-        <div class="auth-error" id="auth-error" style="display:none;"></div>
-
-        <button type="submit" class="btn-primary btn-auth-submit" id="auth-submit">
-          <span class="btn-text">Masuk</span>
-          <span class="btn-spinner" style="display:none;"></span>
-        </button>
-      </form>
-
-      <div class="auth-divider">
-        <span>atau gunakan tanpa login</span>
-      </div>
-      <button class="btn-secondary btn-guest" id="btn-guest">
-        Lanjutkan sebagai Tamu
-      </button>
-    </div>
-  </div>
-
-  <!-- Sync Status Indicator -->
-  <div class="sync-indicator" id="sync-indicator" style="display:none;">
-    <span class="sync-icon">🔄</span>
-    <span class="sync-text">Menyinkronkan...</span>
-  </div>
-
-  <!-- Main Grid Layout -->
-  <div class="app-container">
-    
-    <!-- Sidebar Navigation -->
-    <nav class="sidebar-nav" aria-label="Navigasi Utama">
-      <ul class="nav-list" id="nav-list">
-        <!-- Renders dynamically from app.js -->
+    <nav>
+      <ul class="nav-menu">
+        <li><a href="#home" class="nav-link">Beranda</a></li>
+        <li><a href="#about" class="nav-link font-medium">Tentang Kami</a></li>
+        <li><a href="#contact" class="nav-link">Kontak</a></li>
       </ul>
     </nav>
 
-    <!-- Main Content Area -->
-    <main class="content-area" id="main-content" aria-live="polite">
-      <!-- Renders dynamically from app.js based on activeTab -->
-    </main>
+    <a href="app.html" class="btn-cta">Buka Kalkulator</a>
+  </header>
 
-  </div>
+  <!-- Hero Section -->
+  <section class="hero-section" id="home">
+    <div class="hero-content">
+      <span class="hero-badge">Hubungi Kontak Kami</span>
+      <h2>Hubungi Kami</h2>
+      <p>Punya pertanyaan seputar cara kerja kalkulator AgriCalc atau ingin bekerjasama dengan tim riset agronomi kami?</p>
+    </div>
 
-  <!-- Main ES6 JavaScript Entry -->
-  <script type="module" src="main.js"></script>
+    <!-- Curved / Torn wave divider at the bottom of hero -->
+    <div class="wave-divider">
+      <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
+        <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" class="shape-fill"></path>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Cards Section -->
+  <section class="cards-section" id="about">
+    <!-- Card 1: Phone -->
+    <div class="contact-card cream">
+      <div class="card-icon-wrapper">📞</div>
+      <h3 class="card-title">(+62) 812-3456-7890</h3>
+      <p class="card-desc">Hubungi tim ahli kami untuk konsultasi teknis operasional lahan, dosis pupuk, kalibrasi alat, dan analisis finansial usahatani.</p>
+      <a href="tel:+6281234567890" class="card-link">Hubungi Kami &rarr;</a>
+    </div>
+
+    <!-- Card 2: Email (Green Background Highlight) -->
+    <div class="contact-card green">
+      <div class="card-icon-wrapper">✉️</div>
+      <h3 class="card-title">support@agricalc.com</h3>
+      <p class="card-desc">Butuh bantuan integrasi database, sinkronisasi data cloud, atau memiliki masukan pengembangan fitur kalkulator agronomi?</p>
+      <a href="mailto:support@agricalc.com" class="card-link">Kirim Email &rarr;</a>
+    </div>
+
+    <!-- Card 3: Address -->
+    <div class="contact-card cream">
+      <div class="card-icon-wrapper">📍</div>
+      <h3 class="card-title">Kediri, Jawa Timur</h3>
+      <p class="card-desc">Terinspirasi dari daerah sentra hortikultura subur di lereng Gunung Kelud untuk penyusunan database budidaya presisi.</p>
+      <a href="#location" class="card-link">Lihat Lokasi &rarr;</a>
+    </div>
+  </section>
+
+  <!-- Main Body Content: Two Columns -->
+  <main class="main-content-layout" id="contact">
+    <!-- Left Column: Hours & Map -->
+    <div class="content-left">
+      <div class="time-section">
+        <span class="form-badge">Waktu Pelayanan</span>
+        <h3>Jam Operasional Kami</h3>
+        <p>Tim admin dan tenaga ahli agronomi kami siap melayani Anda pada waktu berikut:</p>
+        <ul class="time-list">
+          <li class="time-item">
+            <span class="time-icon">📅</span>
+            <span>Senin - Jumat : 07.00 - 17.00 WIB</span>
+          </li>
+          <li class="time-item">
+            <span class="time-icon">📅</span>
+            <span>Sabtu : 09.00 - 15.00 WIB</span>
+          </li>
+          <li class="time-item holiday">
+            <span class="time-icon">❌</span>
+            <span>Minggu & Hari Libur Nasional (Tutup)</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="map-section" id="location">
+        <h3>Lokasi Riset Lapangan Kami</h3>
+        <div class="map-card">
+          <!-- Responsive Google Map Embed -->
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126438.28548232924!2d112.012561!3d-7.817286!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e78570e30349ca5%3A0x30277595567c9c0!2sKediri%2C%20Kediri%20Regency%2C%20East%20Java!5e0!3m2!1sen!2sid!4v1689000000000!5m2!1sen!2sid" 
+            width="100%" 
+            height="100%" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Column: Contact Form -->
+    <div class="form-section">
+      <span class="form-badge">Kirim Pesan</span>
+      <h3>Hubungi Tim Ahli</h3>
+      <form class="contact-form" id="landing-contact-form">
+        <div class="form-group">
+          <label for="contact-name">Nama Lengkap</label>
+          <input type="text" id="contact-name" name="name" placeholder="Nama Anda..." required>
+        </div>
+        <div class="form-group">
+          <label for="contact-email">Alamat Email</label>
+          <input type="email" id="contact-email" name="email" placeholder="email@contoh.com" required>
+        </div>
+        <div class="form-group">
+          <label for="contact-message">Pesan Anda</label>
+          <textarea id="contact-message" name="message" placeholder="Tuliskan pertanyaan atau pesan Anda di sini..." required></textarea>
+        </div>
+        <button type="submit" class="btn-submit" id="btn-submit-contact">Kirim Pesan Sekarang</button>
+      </form>
+    </div>
+  </main>
+
+  <!-- Footer Section -->
+  <footer class="app-footer">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="brand-section">
+          <div class="logo-badge">🚜</div>
+          <div class="brand-text">
+            <h1>AgriCalc</h1>
+            <p>Pertanian Presisi Modern</p>
+          </div>
+        </div>
+        <p class="footer-desc">Solusi kalkulator pertanian digital terintegrasi untuk membantu petani dan agronom profesional meningkatkan produktivitas hasil panen secara berkelanjutan.</p>
+        <div class="social-links">
+          <a href="#" class="social-icon" title="Facebook">🌐</a>
+          <a href="#" class="social-icon" title="Twitter">🐦</a>
+          <a href="#" class="social-icon" title="YouTube">📺</a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Navigasi</h4>
+        <ul class="footer-list">
+          <li><a href="#home">Beranda</a></li>
+          <li><a href="#about">Tentang Kami</a></li>
+          <li><a href="app.html">Kalkulator</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Tautan Cepat</h4>
+        <ul class="footer-list">
+          <li><a href="app.html?tab=population">Populasi Lahan</a></li>
+          <li><a href="app.html?tab=fertilizer">Nutrisi NPK</a></li>
+          <li><a href="app.html?tab=pesticide">Kalibrasi Semprot</a></li>
+          <li><a href="app.html?tab=economics">Ekonomi Usaha</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Hubungi Kami</h4>
+        <div class="footer-contact-item">
+          <span class="icon">📞</span>
+          <span>(+62) 812-3456-7890</span>
+        </div>
+        <div class="footer-contact-item">
+          <span class="icon">✉️</span>
+          <span>support@agricalc.com</span>
+        </div>
+        <div class="footer-contact-item">
+          <span class="icon">📍</span>
+          <span>Kediri, Jawa Timur, Indonesia</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; 2026 AgriCalc. Hak Cipta Dilindungi Undang-Undang.</span>
+      <span>Didesain dengan Cinta untuk Pertanian Indonesia</span>
+    </div>
+  </footer>
+
+  <script>
+    // Handle simple submit success state to wow user
+    document.getElementById("landing-contact-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const name = document.getElementById("contact-name").value;
+      const submitBtn = document.getElementById("btn-submit-contact");
+      
+      submitBtn.textContent = "Mengirim...";
+      submitBtn.disabled = true;
+
+      setTimeout(() => {
+        alert("Terima kasih " + name + ", pesan Anda telah berhasil dikirim! Tim kami akan menghubungi Anda segera.");
+        document.getElementById("landing-contact-form").reset();
+        submitBtn.textContent = "Kirim Pesan Sekarang";
+        submitBtn.disabled = false;
+      }, 1200);
+    });
+  </script>
 </body>
 </html>

@@ -6,49 +6,54 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
 :root {
-  /* HSL Color Palette (Dark Theme Default) */
-  --bg-primary: hsl(140, 24%, 6%);
-  --bg-secondary: hsl(140, 18%, 10%);
-  --bg-card: hsla(140, 15%, 15%, 0.65);
+  /* Lawncare Light Cream Theme (Default) */
+  --bg-primary: #fbf9f4;       /* Cream background */
+  --bg-secondary: #1a4224;     /* Deep forest green for header/sidebar/footer */
+  --bg-card: #ffffff;          /* White cards */
+  --bg-card-light: #f7f4eb;    /* Cream subcards / inputs bg */
   
-  --primary: hsl(142, 72%, 40%);
-  --primary-hover: hsl(142, 72%, 48%);
-  --primary-glow: hsla(142, 72%, 40%, 0.25);
-  --accent: hsl(45, 95%, 50%);
-  --accent-glow: hsla(45, 95%, 50%, 0.25);
+  --primary: #8bc34a;          /* Lime green accent for buttons */
+  --primary-hover: #7cb342;
+  --primary-glow: rgba(139, 195, 74, 0.25);
+  --accent: #2e6f40;           /* Forest green for text links/borders */
+  --accent-glow: rgba(46, 111, 64, 0.12);
   
-  --text-main: hsl(140, 10%, 95%);
-  --text-muted: hsl(140, 10%, 65%);
+  --text-main: #1b2e1f;        /* Very dark forest green text */
+  --text-muted: #5c6b5e;       /* Sage/green-grey muted text */
   
-  --border-glass: hsla(142, 20%, 30%, 0.22);
-  --border-focus: hsla(142, 72%, 50%, 0.6);
-  --shadow-main: 0 12px 40px 0 rgba(0, 0, 0, 0.5);
+  --border-glass: rgba(46, 111, 64, 0.12);
+  --border-focus: #2e6f40;     /* Focus outline */
+  --border-dashed: #c3cabf;    /* Dashed border style */
+  --shadow-main: 0 10px 30px rgba(26, 66, 36, 0.05);
   
   --glass-blur: 14px;
-  --radius-lg: 18px;
-  --radius-md: 10px;
+  --radius-lg: 20px;
+  --radius-md: 12px;
   --radius-sm: 6px;
   --font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
   --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-[data-theme="light"] {
-  /* HSL Color Palette (Light Theme Override) */
-  --bg-primary: hsl(140, 35%, 96%);
-  --bg-secondary: hsl(140, 25%, 90%);
-  --bg-card: hsla(140, 15%, 98%, 0.8);
+[data-theme="dark"] {
+  /* Premium Dark Forest Theme */
+  --bg-primary: #101c13;       /* Very dark green-black */
+  --bg-secondary: #080f0a;     /* Deepest dark green */
+  --bg-card: rgba(27, 46, 31, 0.65);
+  --bg-card-light: rgba(16, 28, 19, 0.8);
   
-  --primary: hsl(142, 76%, 30%);
-  --primary-hover: hsl(142, 76%, 24%);
-  --primary-glow: hsla(142, 76%, 30%, 0.12);
-  --accent: hsl(35, 95%, 45%);
+  --primary: #8bc34a;          /* Lime green active accent */
+  --primary-hover: #a2d861;
+  --primary-glow: rgba(139, 195, 74, 0.35);
+  --accent: #2e6f40;           /* Warm forest green */
+  --accent-glow: rgba(46, 111, 64, 0.25);
   
-  --text-main: hsl(140, 30%, 12%);
-  --text-muted: hsl(140, 15%, 42%);
+  --text-main: #f0f4f1;        /* Off-white */
+  --text-muted: #8fa093;       /* Sage/green-grey */
   
-  --border-glass: hsla(142, 20%, 75%, 0.45);
-  --border-focus: hsla(142, 76%, 35%, 0.8);
-  --shadow-main: 0 12px 40px 0 rgba(10, 45, 15, 0.08);
+  --border-glass: rgba(139, 195, 74, 0.15);
+  --border-focus: #8bc34a;
+  --border-dashed: rgba(255, 255, 255, 0.2);
+  --shadow-main: 0 12px 40px rgba(0, 0, 0, 0.5);
 }
 
 /* Base resets & layout */
@@ -80,11 +85,12 @@ body {
   align-items: center;
   padding: 15px 30px;
   background-color: var(--bg-secondary);
-  border-bottom: 1px solid var(--border-glass);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(var(--glass-blur));
   position: sticky;
   top: 0;
   z-index: 100;
+  color: #ffffff;
 }
 
 .brand-section {
@@ -94,7 +100,7 @@ body {
 }
 
 .logo-badge {
-  background: linear-gradient(135deg, var(--primary), var(--accent));
+  background: var(--primary); /* lime green */
   width: 40px;
   height: 40px;
   border-radius: var(--radius-md);
@@ -107,13 +113,14 @@ body {
 
 .brand-text h1 {
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1.2;
+  color: #ffffff;
 }
 
 .brand-text p {
   font-size: 11px;
-  color: var(--text-muted);
+  color: #a2bba5; /* soft sage green tag */
 }
 
 .header-controls {
@@ -182,19 +189,21 @@ input:checked + .slider:before {
 
 /* Select element */
 .lang-dropdown {
-  background-color: var(--bg-card);
-  border: 1px solid var(--border-glass);
-  color: var(--text-main);
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #ffffff;
   padding: 6px 12px;
   border-radius: var(--radius-sm);
   font-family: var(--font-family);
   font-size: 13px;
   cursor: pointer;
   outline: none;
+  transition: var(--transition-smooth);
 }
 
 .lang-dropdown option {
   background-color: var(--bg-secondary);
+  color: #ffffff;
 }
 
 /* Main Container Layout */
@@ -207,7 +216,7 @@ input:checked + .slider:before {
 .sidebar-nav {
   width: 260px;
   background-color: var(--bg-secondary);
-  border-right: 1px solid var(--border-glass);
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
   padding: 25px 15px;
   display: flex;
   flex-direction: column;
@@ -228,20 +237,20 @@ input:checked + .slider:before {
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: var(--transition-smooth);
-  color: var(--text-muted);
+  color: #a2bba5; /* Sage green for menu items */
   font-weight: 500;
   font-size: 15px;
 }
 
 .nav-item:hover {
-  background-color: var(--bg-card);
-  color: var(--text-main);
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #ffffff;
   transform: translateX(4px);
 }
 
 .nav-item.active {
-  background: linear-gradient(135deg, var(--primary-glow), transparent);
-  color: var(--primary);
+  background: linear-gradient(135deg, rgba(139, 195, 74, 0.15), transparent);
+  color: var(--primary); /* lime green active */
   border-left: 4px solid var(--primary);
   font-weight: 600;
 }
@@ -608,8 +617,8 @@ label {
 input[type="number"], select {
   width: 100%;
   padding: 10px 12px;
-  background-color: rgba(0, 0, 0, 0.2);
-  border: 1px solid var(--border-glass);
+  background-color: var(--bg-card-light);
+  border: 1px dashed var(--border-dashed);
   border-radius: var(--radius-md);
   color: var(--text-main);
   font-family: var(--font-family);
@@ -620,6 +629,7 @@ input[type="number"], select {
 
 input[type="number"]:focus, select:focus {
   border-color: var(--border-focus);
+  background-color: var(--bg-card);
   box-shadow: 0 0 10px var(--primary-glow);
 }
 
@@ -632,14 +642,21 @@ input[type="number"]:focus, select:focus {
   display: flex;
   align-items: center;
   gap: 8px;
-  background-color: rgba(0, 0, 0, 0.15);
-  border: 1px solid var(--border-glass);
+  background-color: var(--bg-card-light);
+  border: 1px dashed var(--border-dashed);
   padding: 8px 12px;
   border-radius: var(--radius-md);
   cursor: pointer;
   font-size: 12px;
   font-weight: 500;
   flex: 1;
+  color: var(--text-main);
+  transition: var(--transition-smooth);
+}
+
+.radio-label:hover {
+  border-color: var(--border-focus);
+  background-color: var(--bg-card);
 }
 
 .radio-label input[type="radio"] {
@@ -656,7 +673,7 @@ input[type="range"] {
   font-size: 12px;
   font-weight: 600;
   text-align: right;
-  color: var(--primary);
+  color: var(--accent);
 }
 
 .help-text {
@@ -668,11 +685,11 @@ input[type="range"] {
 /* Buttons */
 .btn {
   padding: 12px 20px;
-  border-radius: var(--radius-md);
+  border-radius: 30px; /* Rounded pill style matching Lawncare */
   border: none;
   font-family: var(--font-family);
   font-size: 14px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: var(--transition-smooth);
   display: inline-flex;
@@ -683,24 +700,26 @@ input[type="range"] {
 
 .btn-primary {
   background-color: var(--primary);
-  color: white;
+  color: var(--bg-secondary); /* dark forest green text */
   box-shadow: 0 4px 15px var(--primary-glow);
 }
 
 .btn-primary:hover {
-  background-color: var(--primary-hover);
+  background-color: var(--accent);
+  color: var(--white, #ffffff);
   transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--accent-glow);
 }
 
 .btn-secondary {
   background-color: transparent;
-  border: 1px solid var(--border-glass);
+  border: 1px dashed var(--border-dashed);
   color: var(--text-main);
 }
 
 .btn-secondary:hover {
-  background-color: var(--bg-card);
-  border-color: var(--primary);
+  background-color: var(--bg-card-light);
+  border-color: var(--border-focus);
 }
 
 /* Results Display */
@@ -755,8 +774,8 @@ input[type="range"] {
 }
 
 .metric-subcard {
-  background: rgba(0, 0, 0, 0.15);
-  border: 1px solid var(--border-glass);
+  background: var(--bg-card-light);
+  border: 1px dashed var(--border-dashed);
   padding: 12px;
   border-radius: var(--radius-md);
   display: flex;

@@ -122,7 +122,7 @@ class AgriCalcApp {
     this.api = new ApiService();
 
     this.state = {
-      theme: "dark",
+      theme: "light",
       language: "id", // "id" or "en"
       activeTab: "dashboard",
       history: [],
@@ -217,7 +217,7 @@ class AgriCalcApp {
     if (cachedPrefs) {
       try {
         const parsed = JSON.parse(cachedPrefs);
-        this.state.theme = parsed.theme || "dark";
+        this.state.theme = parsed.theme || "light";
         this.state.language = parsed.language || "id";
         this.state.activeTab = parsed.activeTab || "dashboard";
       } catch (e) {

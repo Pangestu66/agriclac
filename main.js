@@ -438,7 +438,7 @@ class AgriCalcApp {
     } else {
       authSection.innerHTML = `
         <button class="btn-auth" id="btn-login" title="${dict.login}">
-          <span class="auth-icon">👤</span>
+          <i class="ph ph-user auth-icon" style="font-size: 16px;"></i>
           <span class="auth-label">${dict.login}</span>
         </button>
       `;
@@ -492,7 +492,7 @@ class AgriCalcApp {
     const indicator = document.getElementById('sync-indicator');
     indicator.className = `sync-indicator ${type}`;
     indicator.innerHTML = `
-      <span class="sync-icon">${type === 'syncing' ? '🔄' : type === 'success' ? '✅' : '❌'}</span>
+      <span class="sync-icon">${type === 'syncing' ? '<i class="ph ph-arrows-counter-clockwise ph-spin"></i>' : type === 'success' ? '<i class="ph ph-check-circle" style="color: #22c55e;"></i>' : '<i class="ph ph-x-circle" style="color: #ef4444;"></i>'}</span>
       <span class="sync-text">${text}</span>
     `;
     indicator.style.display = 'flex';
@@ -513,17 +513,17 @@ class AgriCalcApp {
   renderNavigation() {
     const dict = this.translations[this.state.language];
     const navItems = [
-      { id: "dashboard", label: dict.dashboard, icon: "🏠" },
-      { id: "population", label: dict.population, icon: "🌱" },
-      { id: "fertilizer", label: dict.fertilizer, icon: "🧪" },
-      { id: "pesticide", label: dict.pesticide, icon: "💧" },
-      { id: "economics", label: dict.economics, icon: "📈" }
+      { id: "dashboard", label: dict.dashboard, iconClass: "ph ph-house" },
+      { id: "population", label: dict.population, iconClass: "ph ph-plant" },
+      { id: "fertilizer", label: dict.fertilizer, iconClass: "ph ph-flask" },
+      { id: "pesticide", label: dict.pesticide, iconClass: "ph ph-drop" },
+      { id: "economics", label: dict.economics, iconClass: "ph ph-chart-line-up" }
     ];
 
     const navList = document.getElementById("nav-list");
     navList.innerHTML = navItems.map(item => `
       <li class="nav-item ${this.state.activeTab === item.id ? 'active' : ''}" data-tab="${item.id}">
-        <span class="nav-icon">${item.icon}</span>
+        <span class="nav-icon"><i class="${item.iconClass}"></i></span>
         <span class="nav-label">${item.label}</span>
       </li>
     `).join("");
@@ -643,22 +643,22 @@ class AgriCalcApp {
           <!-- Feature Cards Quick Link -->
           <div class="quick-links-grid">
             <div class="quick-card" data-tab="population">
-              <div class="quick-card-icon">🌱</div>
+              <div class="quick-card-icon"><i class="ph ph-plant"></i></div>
               <h4>${dict.population}</h4>
               <p>${isIndo ? "Hitung populasi tanaman per baris & model grid." : "Calculate row density and grid representation."}</p>
             </div>
             <div class="quick-card" data-tab="fertilizer">
-              <div class="quick-card-icon">🧪</div>
+              <div class="quick-card-icon"><i class="ph ph-flask"></i></div>
               <h4>${dict.fertilizer}</h4>
               <p>${isIndo ? "Atur dosis hara N-P-K makro & karung pupuk." : "Manage soil N-P-K nutrient split guidelines."}</p>
             </div>
             <div class="quick-card" data-tab="pesticide">
-              <div class="quick-card-icon">💧</div>
+              <div class="quick-card-icon"><i class="ph ph-drop"></i></div>
               <h4>${dict.pesticide}</h4>
               <p>${isIndo ? "Kalibrasi kecepatan semprot & debit tangki." : "Calibrate tank capacity and nozzle speed."}</p>
             </div>
             <div class="quick-card" data-tab="economics">
-              <div class="quick-card-icon">📈</div>
+              <div class="quick-card-icon"><i class="ph ph-chart-line-up"></i></div>
               <h4>${dict.economics}</h4>
               <p>${isIndo ? "Proyeksi modal, BEP produksi, dan rasio ROI." : "Analyze cost structure, BEPs, and ROI ratio."}</p>
             </div>
@@ -753,10 +753,10 @@ class AgriCalcApp {
     }
 
     const typeIcons = {
-      population: "🌱",
-      fertilizer: "🧪",
-      pesticide: "💧",
-      economics: "📈"
+      population: '<i class="ph ph-plant"></i>',
+      fertilizer: '<i class="ph ph-flask"></i>',
+      pesticide: '<i class="ph ph-drop"></i>',
+      economics: '<i class="ph ph-chart-line-up"></i>'
     };
 
     return this.state.history.map(item => {
@@ -788,7 +788,7 @@ class AgriCalcApp {
 
       return `
         <div class="history-item">
-          <div class="hist-icon-box">${typeIcons[item.type] || "🚜"}</div>
+          <div class="hist-icon-box">${typeIcons[item.type] || '<i class="ph ph-tractor"></i>'}</div>
           <div class="hist-details">
             <span class="hist-title">${item.title}</span>
             <span class="hist-sub">${subtext} &bull; ${dateStr}</span>

@@ -8,9 +8,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
   <link rel="stylesheet" href="landing.css">
 </head>
 <body>
+  <div class="grain-overlay"></div>
 
   <!-- Background Decorative Glowing Elements (Linear/Vercel Style) -->
   <div class="gradient-blur glow-1"></div>
@@ -81,11 +83,11 @@
         <div class="hero-badge-container">
           <span class="hero-badge">
             <span class="badge-dot"></span>
-            Agricultural Decision Support System v2.0
+            Asisten Perhitungan Tani Pintar v2.0
           </span>
         </div>
-        <h2 class="hero-title">Pertanian Presisi Berbasis Data, Bukan Tebakan.</h2>
-        <p class="hero-description">AgriCalc menyederhanakan perhitungan dosis pupuk, kebutuhan benih, kapasitas irigasi air, dan proyeksi keuntungan usaha tani Indonesia secara ilmiah dalam hitungan detik.</p>
+        <h2 class="hero-title">Hitung kebutuhan pertanian dengan cepat dan mudah menggunakan data Indonesia.</h2>
+        <p class="hero-description">AgriCalc membantu Anda menghitung dosis pupuk, sebaran benih, kebutuhan air irigasi, dan kelayakan finansial usaha tani secara akurat.</p>
         
         <div class="hero-actions">
           <a href="app.html" class="btn-hero-primary" id="cta-mulai-hitung">
@@ -120,14 +122,120 @@
               </div>
               <div class="mockup-url">agricalc.id/app</div>
             </div>
-            <div class="mockup-body">
-              <img src="hero-bg.png" alt="AgriCalc Dashboard Preview" class="mockup-image">
+            <div class="mockup-body" style="padding: 0; background: #faf9f5; overflow: hidden; display: flex; align-items: center; justify-content: center; height: 350px;">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 380" width="100%" height="100%">
+                <defs>
+                  <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#ecfdf5" stop-opacity="0.8"/>
+                    <stop offset="100%" stop-color="#faf9f5"/>
+                  </linearGradient>
+                  <linearGradient id="groundGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#d9f2e6"/>
+                    <stop offset="100%" stop-color="#f0fdf4"/>
+                  </linearGradient>
+                  <radialGradient id="glowGrad" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#22c55e" stop-opacity="0.25"/>
+                    <stop offset="100%" stop-color="#22c55e" stop-opacity="0"/>
+                  </radialGradient>
+                  <g id="crop-sprout">
+                    <path d="M 0 0 C -4 -8, -8 -8, -8 -16 C -4 -16, 0 -12, 0 -6 C 0 -12, 4 -16, 8 -16 C 8 -8, 4 -8, 0 0 Z" fill="#22c55e" />
+                    <path d="M 0 -3 C -2 -6, -4 -6, -4 -11 C -2 -11, 0 -9, 0 -5 Z" fill="#153e1f" opacity="0.3" />
+                    <path d="M 0 0 L 0 -12" stroke="#153e1f" stroke-width="1.5" stroke-linecap="round" />
+                  </g>
+                </defs>
+
+                <!-- Background Sky -->
+                <rect width="100%" height="100%" fill="url(#skyGrad)" />
+                
+                <!-- Grid lines -->
+                <g stroke="rgba(21, 62, 31, 0.05)" stroke-width="1">
+                  <line x1="0" y1="50" x2="500" y2="50" />
+                  <line x1="0" y1="100" x2="500" y2="100" />
+                  <line x1="0" y1="150" x2="500" y2="150" />
+                  <line x1="0" y1="200" x2="500" y2="200" />
+                </g>
+
+                <!-- Crop Field (Perspective/Isometric Grid) -->
+                <g transform="translate(250, 240)">
+                  <polygon points="-240,60 240,60 160,-120 -160,-120" fill="url(#groundGrad)" stroke="rgba(21, 62, 31, 0.1)" stroke-width="1.5" />
+                  
+                  <line x1="-160" y1="-120" x2="-240" y2="60" stroke="rgba(21, 62, 31, 0.08)" stroke-width="2" />
+                  <line x1="-80" y1="-120" x2="-120" y2="60" stroke="rgba(21, 62, 31, 0.08)" stroke-width="2" />
+                  <line x1="0" y1="-120" x2="0" y2="60" stroke="rgba(21, 62, 31, 0.08)" stroke-width="2" />
+                  <line x1="80" y1="-120" x2="120" y2="60" stroke="rgba(21, 62, 31, 0.08)" stroke-width="2" />
+                  <line x1="160" y1="-120" x2="240" y2="60" stroke="rgba(21, 62, 31, 0.08)" stroke-width="2" />
+                  
+                  <line x1="-180" y1="-75" x2="180" y2="-75" stroke="rgba(21, 62, 31, 0.04)" stroke-width="1.5" />
+                  <line x1="-200" y1="-30" x2="200" y2="-30" stroke="rgba(21, 62, 31, 0.04)" stroke-width="1.5" />
+                  <line x1="-220" y1="15" x2="220" y2="15" stroke="rgba(21, 62, 31, 0.04)" stroke-width="1.5" />
+
+                  <!-- Sprouted Crops Row 1 -->
+                  <use href="#crop-sprout" x="-135" y="-75" transform="scale(0.8)" />
+                  <use href="#crop-sprout" x="-68" y="-75" transform="scale(0.8)" />
+                  <use href="#crop-sprout" x="0" y="-75" transform="scale(0.8)" />
+                  <use href="#crop-sprout" x="68" y="-75" transform="scale(0.8)" />
+                  <use href="#crop-sprout" x="135" y="-75" transform="scale(0.8)" />
+
+                  <!-- Sprouted Crops Row 2 -->
+                  <use href="#crop-sprout" x="-150" y="-30" transform="scale(1)" />
+                  <use href="#crop-sprout" x="-75" y="-30" transform="scale(1)" />
+                  <use href="#crop-sprout" x="0" y="-30" transform="scale(1)" />
+                  <use href="#crop-sprout" x="75" y="-30" transform="scale(1)" />
+                  <use href="#crop-sprout" x="150" y="-30" transform="scale(1)" />
+
+                  <!-- Sprouted Crops Row 3 -->
+                  <use href="#crop-sprout" x="-180" y="20" transform="scale(1.2)" />
+                  <use href="#crop-sprout" x="-90" y="20" transform="scale(1.2)" />
+                  <use href="#crop-sprout" x="0" y="20" transform="scale(1.2)" />
+                  <use href="#crop-sprout" x="90" y="20" transform="scale(1.2)" />
+                  <use href="#crop-sprout" x="180" y="20" transform="scale(1.2)" />
+                </g>
+
+                <!-- Scanning cone / light beams from drone -->
+                <polygon points="250,70 150,260 350,260" fill="url(#glowGrad)" />
+                <line x1="250" y1="70" x2="150" y2="260" stroke="#22c55e" stroke-width="1" stroke-dasharray="4,4" opacity="0.4" />
+                <line x1="250" y1="70" x2="350" y2="260" stroke="#22c55e" stroke-width="1" stroke-dasharray="4,4" opacity="0.4" />
+
+                <!-- Hovering Drone -->
+                <g class="drone-element" transform="translate(250, 70)">
+                  <rect x="-30" y="-10" width="60" height="20" rx="6" fill="#153e1f" stroke="#faf9f5" stroke-width="1.5" />
+                  <circle cx="0" cy="0" r="8" fill="#22c55e" />
+                  <path d="M-6 10 L0 16 L6 10 Z" fill="#475569" />
+                  <circle cx="0" cy="12" r="2.5" fill="#faf9f5" />
+                  <line x1="-30" y1="0" x2="-55" y2="-12" stroke="#153e1f" stroke-width="3" stroke-linecap="round" />
+                  <line x1="30" y1="0" x2="55" y2="-12" stroke="#153e1f" stroke-width="3" stroke-linecap="round" />
+                  <line x1="-25" y1="5" x2="-45" y2="15" stroke="#153e1f" stroke-width="2.5" stroke-linecap="round" />
+                  <line x1="25" y1="5" x2="45" y2="15" stroke="#153e1f" stroke-width="2.5" stroke-linecap="round" />
+                  
+                  <rect x="-60" y="-16" width="10" height="5" rx="1" fill="#475569" />
+                  <line x1="-75" y1="-14" x2="-35" y2="-14" stroke="#0f172a" stroke-width="1" />
+                  <rect x="50" y="-16" width="10" height="5" rx="1" fill="#475569" />
+                  <line x1="35" y1="-14" x2="75" y2="-14" stroke="#0f172a" stroke-width="1" />
+                  
+                  <circle cx="-45" cy="15" r="4" fill="#0f172a" />
+                  <circle cx="45" cy="15" r="4" fill="#0f172a" />
+
+                  <circle cx="0" cy="-4" r="2" fill="#22c55e" class="status-pulse" />
+                </g>
+
+                <!-- Farmer silhouette with glowing tablet -->
+                <g class="farmer-element" transform="translate(60, 240)">
+                  <path d="M 0 100 C 5 80, 10 50, 25 45 C 30 40, 35 30, 32 10 C 35 5, 45 5, 48 10 C 45 30, 50 40, 55 45 C 70 50, 75 80, 80 100 Z" fill="#153e1f" />
+                  <path d="M 28 15 C 28 5, 52 5, 52 15 C 52 15, 60 15, 60 18 L 20 18 Z" fill="#22c55e" />
+                  <path d="M 25 50 Q 15 65, 30 75 Q 38 72, 35 58" fill="#113318" />
+                  <polygon points="26,72 45,62 50,70 31,80" fill="#0f172a" stroke="#faf9f5" stroke-width="1" />
+                  <polygon points="28,71 43,63 47,69 32,77" fill="#22c55e" opacity="0.8" class="screen-glow" />
+                  <path d="M 28 32 Q 33 34, 34 38" stroke="#22c55e" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.6" />
+                </g>
+              </svg>
             </div>
           </div>
           
           <!-- Floating Human Micro-Data Widgets (Outside overflow wrapper to prevent clipping) -->
           <div class="floating-widget widget-1">
-            <div class="widget-icon">⚡</div>
+            <div class="widget-icon">
+              <i class="ph ph-lightning" style="color: var(--accent); font-size: 16px;"></i>
+            </div>
             <div class="widget-text">
               <span class="widget-title">Respon Hitung</span>
               <span class="widget-value font-tech">&lt; 300ms</span>
@@ -135,12 +243,72 @@
           </div>
           
           <div class="floating-widget widget-2">
-            <div class="widget-icon">🌱</div>
+            <div class="widget-icon">
+              <i class="ph ph-plant" style="color: #22c55e; font-size: 16px;"></i>
+            </div>
             <div class="widget-text">
               <span class="widget-title">Database Rujukan</span>
               <span class="widget-value font-tech">BPS & Kementan</span>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       QUICK ACTIONS SECTION
+       ════════════════════════════════════════════════════════ -->
+  <section class="quick-actions-section">
+    <div class="section-container">
+      <div class="quick-actions-panel">
+        <h3 class="quick-actions-title">Apa yang ingin Anda hitung hari ini?</h3>
+        <div class="quick-actions-grid">
+          <a href="app.html?tab=fertilizer" class="quick-action-card">
+            <div class="quick-action-icon">
+              <i class="ph ph-flask"></i>
+            </div>
+            <div class="quick-action-info">
+              <h4>Hitung Pupuk (NPK)</h4>
+              <p>Dosis hara tanah & komoditas</p>
+            </div>
+          </a>
+          <a href="app.html?tab=population" class="quick-action-card">
+            <div class="quick-action-icon">
+              <i class="ph ph-plant"></i>
+            </div>
+            <div class="quick-action-info">
+              <h4>Hitung Benih (Populasi)</h4>
+              <p>Kebutuhan benih & pola tanam</p>
+            </div>
+          </a>
+          <a href="app.html?tab=pesticide" class="quick-action-card">
+            <div class="quick-action-icon">
+              <i class="ph ph-drop"></i>
+            </div>
+            <div class="quick-action-info">
+              <h4>Hitung Air &amp; Pestisida</h4>
+              <p>Kalibrasi semprot & dosis air</p>
+            </div>
+          </a>
+          <a href="app.html?tab=economics" class="quick-action-card">
+            <div class="quick-action-icon">
+              <i class="ph ph-chart-line-up"></i>
+            </div>
+            <div class="quick-action-info">
+              <h4>Hitung Keuntungan</h4>
+              <p>Analisis laba rugi usaha tani</p>
+            </div>
+          </a>
+          <a href="app.html?tab=economics" class="quick-action-card">
+            <div class="quick-action-icon">
+              <i class="ph ph-calculator"></i>
+            </div>
+            <div class="quick-action-info">
+              <h4>Hitung BEP</h4>
+              <p>Titik impas kelayakan finansial</p>
+            </div>
+          </a>
         </div>
       </div>
     </div>
@@ -154,14 +322,18 @@
       <div class="stats-grid">
         <div class="stat-card">
           <div class="stat-header">
-            <span class="stat-icon-badge">🎯</span>
-            <span class="stat-number font-tech">5</span>
+            <span class="stat-icon-badge">
+              <i class="ph ph-target"></i>
+            </span>
+            <span class="stat-badge">Aktif</span>
+          </div>
+          <div class="stat-number-wrapper">
+            <span class="stat-number font-tech counter" data-target="5">0</span>
           </div>
           <div class="stat-info">
             <span class="stat-label">Kalkulator Spesialis</span>
-            <span class="stat-sub">Pupuk, Benih, Air, Laba, BEP</span>
+            <span class="stat-sub">Disesuaikan untuk tiap kebutuhan tani</span>
           </div>
-          <!-- Simple CSS Progress Visualization to fill space -->
           <div class="stat-visual-meter">
             <span class="meter-bar" style="width: 100%"></span>
           </div>
@@ -169,26 +341,36 @@
 
         <div class="stat-card">
           <div class="stat-header">
-            <span class="stat-icon-badge">🇮🇩</span>
+            <span class="stat-icon-badge">
+              <i class="ph ph-shield-check"></i>
+            </span>
+            <span class="stat-badge badge-green">Valid</span>
+          </div>
+          <div class="stat-number-wrapper">
             <span class="stat-number font-tech">SNI</span>
           </div>
           <div class="stat-info">
-            <span class="stat-label">Data Terstandardisasi</span>
-            <span class="stat-sub">Sesuai Kebijakan Nasional</span>
+            <span class="stat-label">Rujukan Standar</span>
+            <span class="stat-sub">Sesuai data resmi nasional</span>
           </div>
           <div class="stat-visual-meter">
-            <span class="meter-bar" style="width: 90%; background: var(--accent);"></span>
+            <span class="meter-bar" style="width: 100%; background: var(--accent);"></span>
           </div>
         </div>
 
         <div class="stat-card">
           <div class="stat-header">
-            <span class="stat-icon-badge">📊</span>
-            <span class="stat-number font-tech">10+</span>
+            <span class="stat-icon-badge">
+              <i class="ph ph-plant"></i>
+            </span>
+            <span class="stat-badge">Update</span>
+          </div>
+          <div class="stat-number-wrapper">
+            <span class="stat-number font-tech counter" data-target="10">0</span><span class="stat-suffix">+</span>
           </div>
           <div class="stat-info">
             <span class="stat-label">Komoditas Utama</span>
-            <span class="stat-sub">Tanaman Pangan & Hortikultura</span>
+            <span class="stat-sub">Tanaman pangan & hortikultura tropis</span>
           </div>
           <div class="stat-visual-meter">
             <span class="meter-bar" style="width: 80%"></span>
@@ -197,15 +379,20 @@
 
         <div class="stat-card">
           <div class="stat-header">
-            <span class="stat-icon-badge">⚡</span>
-            <span class="stat-number font-tech">&lt;0.5s</span>
+            <span class="stat-icon-badge">
+              <i class="ph ph-lightning"></i>
+            </span>
+            <span class="stat-badge badge-green">Instan</span>
+          </div>
+          <div class="stat-number-wrapper">
+            <span class="stat-number font-tech counter" data-target="300">0</span><span class="stat-suffix">ms</span>
           </div>
           <div class="stat-info">
-            <span class="stat-label">Kecepatan Eksekusi</span>
-            <span class="stat-sub">Client-side Client-computing</span>
+            <span class="stat-label">Respons Kalkulasi</span>
+            <span class="stat-sub">Selesai seketika di peramban</span>
           </div>
           <div class="stat-visual-meter">
-            <span class="meter-bar" style="width: 98%; background: var(--accent);"></span>
+            <span class="meter-bar" style="width: 95%; background: var(--accent);"></span>
           </div>
         </div>
       </div>
@@ -230,14 +417,9 @@
           <div class="calc-card-glow"></div>
           <div class="calc-card-header">
             <div class="calc-card-icon-wrapper">
-              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="card-icon">
-                <path d="M12 22V12"></path>
-                <path d="M12 12c-2-2.67-4-3.33-7-2 3 6 7 2 7 2z"></path>
-                <path d="M12 14c2-2.67 4-3.33 7-2-3 6-7 2-7 2z"></path>
-                <path d="M12 7.5c1.5-2 3-2.5 5.5-1.5-2.5 4.5-5.5 1.5-5.5 1.5z"></path>
-              </svg>
+              <i class="ph ph-flask"></i>
             </div>
-            <span class="card-pill">NPK & Urea</span>
+            <span class="card-pill">NPK &amp; Urea</span>
           </div>
           <h3>Kalkulator Pupuk</h3>
           <p>Kalkulasi dosis pupuk NPK tunggal maupun majemuk berdasarkan anjuran lahan dan target komoditas Anda.</p>
@@ -247,7 +429,7 @@
           </div>
           <span class="calc-card-cta">
             <span>Gunakan Modul</span>
-            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            <i class="ph ph-arrow-right"></i>
           </span>
         </a>
 
@@ -256,18 +438,7 @@
           <div class="calc-card-glow"></div>
           <div class="calc-card-header">
             <div class="calc-card-icon-wrapper">
-              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="card-icon">
-                <circle cx="5" cy="5" r="1.5" fill="currentColor"></circle>
-                <circle cx="12" cy="5" r="1.5" fill="currentColor"></circle>
-                <circle cx="19" cy="5" r="1.5" fill="currentColor"></circle>
-                <circle cx="5" cy="12" r="1.5" fill="currentColor"></circle>
-                <circle cx="12" cy="12" r="1.5" fill="currentColor"></circle>
-                <circle cx="19" cy="12" r="1.5" fill="currentColor"></circle>
-                <circle cx="5" cy="19" r="1.5" fill="currentColor"></circle>
-                <circle cx="12" cy="19" r="1.5" fill="currentColor"></circle>
-                <circle cx="19" cy="19" r="1.5" fill="currentColor"></circle>
-                <path d="M5 5h14v14H5z" stroke-dasharray="2 2"></path>
-              </svg>
+              <i class="ph ph-plant"></i>
             </div>
             <span class="card-pill font-tech">Populasi Tanaman</span>
           </div>
@@ -279,7 +450,7 @@
           </div>
           <span class="calc-card-cta">
             <span>Gunakan Modul</span>
-            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            <i class="ph ph-arrow-right"></i>
           </span>
         </a>
 
@@ -288,22 +459,19 @@
           <div class="calc-card-glow"></div>
           <div class="calc-card-header">
             <div class="calc-card-icon-wrapper">
-              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="card-icon">
-                <path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-11-7-11S5 10.7 5 15a7 7 0 0 0 7 7z"></path>
-                <path d="M12 18.5a3.5 3.5 0 0 0 3.5-3.5"></path>
-              </svg>
+              <i class="ph ph-drop"></i>
             </div>
             <span class="card-pill">Volume Semprot</span>
           </div>
-          <h3>Kalkulator Air & Spray</h3>
-          <p>Kalibrasi laju alir nozel dan volume tangki semprot herbisida/pestisida agar pemakaian merata & optimal.</p>
+          <h3>Kalkulator Air &amp; Spray</h3>
+          <p>Kalibrasi laju alir nozel dan volume tangki semprot herbisida/pestisida agar pemakaian merata &amp; optimal.</p>
           <div class="card-footer-data">
             <span class="data-tag">Kalibrasi Nozel</span>
             <span class="data-tag font-tech">Standard FAO</span>
           </div>
           <span class="calc-card-cta">
             <span>Gunakan Modul</span>
-            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            <i class="ph ph-arrow-right"></i>
           </span>
         </a>
 
@@ -312,14 +480,9 @@
           <div class="calc-card-glow"></div>
           <div class="calc-card-header">
             <div class="calc-card-icon-wrapper">
-              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="card-icon">
-                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-                <line x1="12" y1="10" x2="12" y2="14"></line>
-                <circle cx="12" cy="12" r="2"></circle>
-                <path d="M6 12h.01M18 12h.01"></path>
-              </svg>
+              <i class="ph ph-chart-line-up"></i>
             </div>
-            <span class="card-pill">Finansial & Investasi</span>
+            <span class="card-pill">Finansial &amp; Investasi</span>
           </div>
           <h3>Kalkulator Keuntungan</h3>
           <p>Analisis neraca pengeluaran bibit, pupuk, tenaga kerja, serta proyeksi laba panen berdasarkan harga jual.</p>
@@ -329,33 +492,43 @@
           </div>
           <span class="calc-card-cta">
             <span>Gunakan Modul</span>
-            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+            <i class="ph ph-arrow-right"></i>
           </span>
         </a>
 
-        <!-- Card 5: BEP -->
+        <!-- Card 5: BEP (Asymmetric Span 2 featured) -->
         <a href="app.html?tab=economics" class="calc-card featured" id="card-bep">
           <div class="calc-card-glow"></div>
-          <div class="calc-card-header">
-            <div class="calc-card-icon-wrapper">
-              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="card-icon">
-                <path d="M3 3v18h18"></path>
-                <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path>
-                <line x1="3" y1="11.5" x2="21" y2="11.5" stroke-dasharray="3 3"></line>
-              </svg>
+          <div class="calc-card-details-left">
+            <div>
+              <div class="calc-card-header">
+                <div class="calc-card-icon-wrapper">
+                  <i class="ph ph-presentation-chart"></i>
+                </div>
+                <span class="card-pill badge-featured">Break Even Point</span>
+              </div>
+              <h3>Kalkulator Titik Impas (BEP)</h3>
+              <p>Ketahui volume produksi minimum dan batas harga terendah agar usaha tani Anda tidak rugi.</p>
             </div>
-            <span class="card-pill badge-featured">Break Even Point</span>
+            <span class="calc-card-cta">
+              <span>Mulai Analisis BEP</span>
+              <i class="ph ph-arrow-right"></i>
+            </span>
           </div>
-          <h3>Kalkulator Titik Impas (BEP)</h3>
-          <p>Ketahui volume produksi minimum dan batas harga terendah agar usaha tani Anda tidak rugi.</p>
-          <div class="card-footer-data">
-            <span class="data-tag">Analisis Batas</span>
-            <span class="data-tag font-tech">Minimasi Risiko</span>
+          <div class="calc-card-details-right">
+            <div class="bep-preview-stat">
+              <span class="bep-preview-label">Akurasi Perhitungan</span>
+              <span class="bep-preview-val font-tech">99.4%</span>
+            </div>
+            <div class="bep-preview-stat">
+              <span class="bep-preview-label">Metode Standard</span>
+              <span class="bep-preview-val font-tech">Unit &amp; Rupiah</span>
+            </div>
+            <div class="card-footer-data" style="margin: 12px 0 0 0;">
+              <span class="data-tag">Minimasi Risiko</span>
+              <span class="data-tag font-tech">Batas Harga</span>
+            </div>
           </div>
-          <span class="calc-card-cta">
-            <span>Gunakan Modul</span>
-            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-          </span>
         </a>
       </div>
     </div>
@@ -431,45 +604,73 @@
 
       <div class="data-grid">
         <div class="data-card">
-          <div class="data-icon-wrapper">💹</div>
+          <div class="data-icon-wrapper">
+            <i class="ph ph-trend-up"></i>
+          </div>
           <h3>Komoditas Pasar</h3>
           <p>Integrasi rujukan tingkat tren harga rata-rata komoditas pangan dari data BPS dan BPN.</p>
-          <span class="data-source-tag">BPS & BPN RI</span>
+          <span class="data-source-tag">BPS &amp; BPN RI</span>
         </div>
         
         <div class="data-card">
-          <div class="data-icon-wrapper">🧪</div>
+          <div class="data-icon-wrapper">
+            <i class="ph ph-test-tube"></i>
+          </div>
           <h3>Rekomendasi NPK</h3>
-          <p>Formulasi dosis tanah disesuaikan dengan Permentan No 40/2007 tentang pemupukan padi & jagung.</p>
+          <p>Formulasi dosis tanah disesuaikan dengan Permentan No 40/2007 tentang pemupukan padi &amp; jagung.</p>
           <span class="data-source-tag">Permentan RI</span>
         </div>
 
         <div class="data-card">
-          <div class="data-icon-wrapper">🌾</div>
+          <div class="data-icon-wrapper">
+            <i class="ph ph-grain"></i>
+          </div>
           <h3>Varietas Unggul</h3>
           <p>Spesifikasi benih dikompilasi dari Balai Penelitian Tanaman Pangan (Balitbangtan).</p>
           <span class="data-source-tag">Balitbangtan</span>
         </div>
 
         <div class="data-card">
-          <div class="data-icon-wrapper">📊</div>
+          <div class="data-icon-wrapper">
+            <i class="ph ph-presentation"></i>
+          </div>
           <h3>Ubinan Produktivitas</h3>
           <p>Data target produktivitas rata-rata didasarkan pada statistik panen per wilayah di Indonesia.</p>
           <span class="data-source-tag">BPS Statistik</span>
         </div>
 
         <div class="data-card">
-          <div class="data-icon-wrapper">💧</div>
+          <div class="data-icon-wrapper">
+            <i class="ph ph-drop-half"></i>
+          </div>
           <h3>Kebutuhan Air</h3>
           <p>Konsep laju alir kalibrasi nozel semprot berbasis pada standar irigasi pertanian FAO.</p>
           <span class="data-source-tag">FAO Standards</span>
         </div>
       </div>
 
+      <!-- Database Update Status & Partner Metadata -->
+      <div class="data-status-bar">
+        <div class="data-status-left">
+          <span class="status-indicator">
+            <span class="status-indicator-dot"></span>
+            Status Data: <strong class="font-tech">AKTIF</strong>
+          </span>
+          <span class="status-separator">•</span>
+          <span class="status-date">Terakhir Diperbarui: <strong class="font-tech">2 Januari 2026</strong></span>
+        </div>
+        <div class="data-status-agencies">
+          <span class="agency-badge">Rujukan Resmi:</span>
+          <span class="agency-badge font-tech">BPS RI</span>
+          <span class="agency-badge font-tech">KEMENTAN RI</span>
+          <span class="agency-badge font-tech">FAO</span>
+        </div>
+      </div>
+
       <div class="data-disclaimer">
         <div class="disclaimer-glow"></div>
-        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" class="disclaimer-icon"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-        <p>Aplikasi ADSS ini dirancang untuk simulasi perencanaan berbasis pustaka agronomi. Hasil lapangan dipengaruhi oleh kondisi cuaca mikro setempat, kualitas bibit rill, dan kesuburan tanah.</p>
+        <i class="ph ph-info disclaimer-icon" style="font-size: 20px; color: var(--primary);"></i>
+        <p>Kalkulator pintar ini dirancang sebagai asisten perencanaan tani berbasis pustaka agronomi resmi Indonesia. Keberhasilan riil di lapangan dipengaruhi oleh cuaca mikro setempat, tata kelola fisik lahan, serta kualitas bibit tanaman yang digunakan.</p>
       </div>
     </div>
   </section>
@@ -494,12 +695,12 @@
         <div class="why-card">
           <div class="why-card-icon-wrapper">⚡</div>
           <h3>Kalkulasi Instan</h3>
-          <p>Perhitungan di sisi browser secara client-side, selesai di bawah 500ms tanpa loading server berat.</p>
+          <p>Hasil perhitungan muncul seketika secara langsung di perangkat Anda tanpa perlu menunggu loading lama.</p>
         </div>
         <div class="why-card">
           <div class="why-card-icon-wrapper">🖥️</div>
-          <h3>Antarmuka SaaS Modern</h3>
-          <p>Tampilan bersih berbasis kegunaan tinggi tanpa iklan mengganggu, ramah bagi petani dan profesional.</p>
+          <h3>Antarmuka Bersih &amp; Ramah</h3>
+          <p>Tampilan bersih yang dirancang khusus agar mudah dibaca dan digunakan oleh siapa saja, dari petani hingga praktisi.</p>
         </div>
         <div class="why-card">
           <div class="why-card-icon-wrapper">📂</div>
@@ -558,7 +759,7 @@
             <span class="faq-arrow"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
           </summary>
           <div class="faq-answer">
-            <p>Sama sekali tidak. AgriCalc didedikasikan sebagai aplikasi Decision Support System (ADSS) publik yang dapat diakses penuh secara gratis oleh petani, penyuluh, dosen, mahasiswa pertanian, maupun agribisnis tanpa pembatasan kuota hitung.</p>
+            <p>Sama sekali tidak. AgriCalc didedikasikan sebagai kalkulator pertanian pintar gratis untuk petani, penyuluh, mahasiswa pertanian, maupun praktisi agribisnis tanpa batasan kuota hitung.</p>
           </div>
         </details>
 
@@ -593,7 +794,7 @@
             <p>Pertanian Presisi Modern</p>
           </div>
         </a>
-        <p class="footer-desc">Agricultural Decision Support System (ADSS) modern untuk membantu meningkatkan produktivitas, menghemat biaya pupuk, dan mengoptimalkan hasil panen petani Indonesia.</p>
+        <p class="footer-desc">Kalkulator pertanian modern untuk membantu menghemat pupuk, menghitung benih secara tepat, dan memaksimalkan hasil panen secara berkelanjutan.</p>
       </div>
 
       <div class="footer-col">
@@ -668,12 +869,39 @@
       }
     });
 
+    // Counter animation function
+    function startCounters(card) {
+      const counters = card.querySelectorAll('.counter');
+      counters.forEach(counter => {
+        if (counter.classList.contains('counted')) return;
+        counter.classList.add('counted');
+        const target = +counter.getAttribute('data-target');
+        const duration = 1000; // ms
+        const increment = target / (duration / 16);
+        let current = 0;
+        
+        const updateCount = () => {
+          current += increment;
+          if (current < target) {
+            counter.innerText = Math.floor(current);
+            requestAnimationFrame(updateCount);
+          } else {
+            counter.innerText = target;
+          }
+        };
+        updateCount();
+      });
+    }
+
     // Intersection Observer for scroll animations
     const observerOpts = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
     const animateObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('visible');
+          if (entry.target.classList.contains('stat-card')) {
+            startCounters(entry.target);
+          }
         }
       });
     }, observerOpts);

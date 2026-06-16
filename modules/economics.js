@@ -17,7 +17,7 @@ export function initEconomicsModule(container, state, db) {
           <div class="form-group">
             <label for="econ-crop">Pilih Komoditas:</label>
             <select id="econ-crop" name="cropId">
-              ${db.CROPS.map(c => `<option value="${c.id}">${c.name}</option>`).join('')}
+              ${db.CROPS.map(c => `<option value="${c.id}" ${state.selectedCropId === c.id ? 'selected' : ''}>${c.name}</option>`).join('')}
             </select>
             <div id="econ-crop-info" class="helper-info-box" style="margin-top: 8px;"></div>
           </div>
@@ -69,11 +69,11 @@ export function initEconomicsModule(container, state, db) {
           <div class="form-row">
             <div class="form-group">
               <label for="econ-yield">Estimasi Hasil Panen (kg):</label>
-              <input type="number" id="econ-yield" name="expectedYield" value="6000" min="1" step="10" required>
+              <input type="number" id="econ-yield" name="expectedYield" value="6000" min="0" step="10" required>
             </div>
             <div class="form-group">
               <label for="econ-price">Harga Jual Pasar (IDR/kg):</label>
-              <input type="number" id="econ-price" name="pricePerKg" value="6500" min="1" step="50" required>
+              <input type="number" id="econ-price" name="pricePerKg" value="6500" min="0" step="50" required>
             </div>
           </div>
 
@@ -163,29 +163,33 @@ export function initEconomicsModule(container, state, db) {
          Initial production costs have been pre-filled for <strong>${crop.name}</strong>. You can adjust the detailed values below based on your local conditions.`;
   }
 
+  function applyEconCropDefaults(crop) {
+    if (!crop) return;
+    const area = parseFloat(areaInput.value);
+    const areaUnit = areaUnitSelect.value;
+    const areaHa = areaUnit === "ha" ? area : area / 10000;
+
+    // Scale expected yield based on selected crop & land size
+    yieldInput.value = Math.round(crop.expectedYieldPerHa * areaHa);
+    priceInput.value = crop.pricePerKg;
+
+    // Scale costs roughly as guideline
+    costLand.value = Math.round(4000000 * areaHa);
+    costSeeds.value = Math.round(1500000 * areaHa);
+    costFert.value = Math.round(3000000 * areaHa);
+    costPest.value = Math.round(1200000 * areaHa);
+    costLabor.value = Math.round(5000000 * areaHa);
+    costOther.value = Math.round(800000 * areaHa);
+
+    updateEconCropInfo(crop);
+    calculateEcon();
+  }
+
   // Load crop defaults on change
   cropSelect.addEventListener("change", (e) => {
+    if (state.updateCropId) state.updateCropId(e.target.value);
     const crop = db.CROPS.find(c => c.id === e.target.value);
-    if (crop) {
-      const area = parseFloat(areaInput.value);
-      const areaUnit = areaUnitSelect.value;
-      const areaHa = areaUnit === "ha" ? area : area / 10000;
-
-      // Scale expected yield based on selected crop & land size
-      yieldInput.value = Math.round(crop.expectedYieldPerHa * areaHa);
-      priceInput.value = crop.pricePerKg;
-
-      // Scale costs roughly as guideline
-      costLand.value = Math.round(4000000 * areaHa);
-      costSeeds.value = Math.round(1500000 * areaHa);
-      costFert.value = Math.round(3000000 * areaHa);
-      costPest.value = Math.round(1200000 * areaHa);
-      costLabor.value = Math.round(5000000 * areaHa);
-      costOther.value = Math.round(800000 * areaHa);
-
-      updateEconCropInfo(crop);
-      calculateEcon();
-    }
+    applyEconCropDefaults(crop);
   });
 
   // Re-scale when area changes
@@ -213,9 +217,9 @@ export function initEconomicsModule(container, state, db) {
   areaInput.addEventListener("input", handleAreaChange);
   areaUnitSelect.addEventListener("change", handleAreaChange);
 
-  // Initialize economics default advice
+  // Initialize economics defaults
   const initialCrop = db.CROPS.find(c => c.id === cropSelect.value);
-  updateEconCropInfo(initialCrop);
+  applyEconCropDefaults(initialCrop);
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -344,11 +348,22 @@ export function initEconomicsModule(container, state, db) {
     let pathsSvg = "";
     let legendSvg = "";
 
+    const isIndo = state.language === 'id';
+    let formattedTotal = "";
+    if (total >= 1000000000) {
+      formattedTotal = isIndo ? `${(total / 1000000000).toFixed(1)} M` : `${(total / 1000000000).toFixed(1)}B`;
+    } else if (total >= 1000000) {
+      formattedTotal = isIndo ? `${(total / 1000000).toFixed(1)} Jt` : `${(total / 1000000).toFixed(1)}M`;
+    } else {
+      formattedTotal = isIndo ? `${(total / 1000).toFixed(0)} Rb` : `${(total / 1000).toFixed(0)}K`;
+    }
+
     filtered.forEach((cat, index) => {
-      const percentage = cat.value / total;
-      const strokeLength = circumference * percentage;
-      const strokeOffset = circumference - (circumference * accumulatedPercent);
-      const percentVal = (percentage * 100).toFixed(1);
+      const percentage = (cat.value / total) * 100;
+      const strokeLength = percentage;
+      // Start the dash clockwise using negative offset in percent (0 to -100)
+      const strokeOffset = -accumulatedPercent;
+      const percentVal = percentage.toFixed(1);
 
       // We represent sections as overlapping stroke arcs on a circle
       pathsSvg += `
@@ -357,10 +372,10 @@ export function initEconomicsModule(container, state, db) {
           fill="transparent"
           stroke="${cat.color}"
           stroke-width="${strokeWidth}"
-          stroke-dasharray="${strokeLength} ${circumference}"
+          pathLength="100"
+          stroke-dasharray="${strokeLength} 100"
           stroke-dashoffset="${strokeOffset}"
           transform="rotate(-90 ${center} ${center})"
-          style="transition: stroke-dashoffset 0.8s ease;"
         />
       `;
 
@@ -377,11 +392,9 @@ export function initEconomicsModule(container, state, db) {
     wrapper.innerHTML = `
       <div class="donut-chart-box">
         <svg width="200" height="200" viewBox="0 0 200 200">
-          <circle cx="${center}" cy="${center}" r="${donutRadius}" fill="transparent" stroke="${state.theme === 'dark' ? '#2c2c2c' : '#eaeaea'}" stroke-width="${strokeWidth}" />
           ${pathsSvg}
-          <circle cx="${center}" cy="${center}" r="${donutRadius - strokeWidth/2}" fill="${state.theme === 'dark' ? '#141a12' : '#ffffff'}" />
-          <text x="${center}" y="${center - 5}" text-anchor="middle" font-family="sans-serif" font-size="12" fill="${state.theme === 'dark' ? '#8ca388' : '#6c5d43'}">Total Biaya</text>
-          <text x="${center}" y="${center + 15}" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="13" fill="${state.theme === 'dark' ? '#ffffff' : '#141a12'}">IDR ${(total/1000000).toFixed(1)}M</text>
+          <text x="${center}" y="${center - 5}" text-anchor="middle" font-family="sans-serif" font-size="12" fill="${state.theme === 'dark' ? '#8ca388' : '#6c5d43'}">${isIndo ? 'Total Biaya' : 'Total Cost'}</text>
+          <text x="${center}" y="${center + 15}" text-anchor="middle" font-family="sans-serif" font-weight="bold" font-size="13" fill="${state.theme === 'dark' ? '#ffffff' : '#141a12'}">IDR ${formattedTotal}</text>
         </svg>
         <div class="chart-legends">
           ${legendSvg}

@@ -17,7 +17,7 @@ export function initPopulationModule(container, state, db) {
           <div class="form-group">
             <label for="pop-crop">Pilih Komoditas:</label>
             <select id="pop-crop" name="cropId">
-              ${db.CROPS.map(c => `<option value="${c.id}">${c.name}</option>`).join('')}
+              ${db.CROPS.map(c => `<option value="${c.id}" ${state.selectedCropId === c.id ? 'selected' : ''}>${c.name}</option>`).join('')}
             </select>
             <div id="pop-crop-info" class="helper-info-box" style="margin-top: 8px;"></div>
           </div>
@@ -146,34 +146,38 @@ export function initPopulationModule(container, state, db) {
     germinationLabel.textContent = e.target.value;
   });
 
+  function applyCropDefaults(crop) {
+    if (!crop) return;
+    spacingRowInput.value = crop.defaultSpacingRow;
+    spacingColInput.value = crop.defaultSpacingCol;
+    // Set default seed weights depending on crop
+    const weightInput = container.querySelector("#pop-seed-weight");
+    if (crop.id === "padi") weightInput.value = 27;
+    else if (crop.id === "jagung") weightInput.value = 250; // Jagung berat per 1000 biji ~250-300g
+    else if (crop.id === "kelapa_sawit") weightInput.value = 4000; // Sawit berat biji besar
+    else weightInput.value = 20; // Default hortikultura kecil
+    
+    // Select appropriate spacing pattern
+    const patterns = container.querySelectorAll("input[name='pattern']");
+    if (crop.id === "kelapa_sawit") {
+      patterns[1].checked = true; // Triangular for sawit
+    } else {
+      patterns[0].checked = true; // Rectangular for others
+    }
+    updateCropSpacingInfo(crop);
+    calculatePop();
+  }
+
   // Load defaults when crop changes
   cropSelect.addEventListener("change", (e) => {
+    if (state.updateCropId) state.updateCropId(e.target.value);
     const crop = db.CROPS.find(c => c.id === e.target.value);
-    if (crop) {
-      spacingRowInput.value = crop.defaultSpacingRow;
-      spacingColInput.value = crop.defaultSpacingCol;
-      // Set default seed weights depending on crop
-      const weightInput = container.querySelector("#pop-seed-weight");
-      if (crop.id === "padi") weightInput.value = 27;
-      else if (crop.id === "jagung") weightInput.value = 250; // Jagung berat per 1000 biji ~250-300g
-      else if (crop.id === "kelapa_sawit") weightInput.value = 4000; // Sawit berat biji besar
-      else weightInput.value = 20; // Default hortikultura kecil
-      
-      // Select appropriate spacing pattern
-      const patterns = container.querySelectorAll("input[name='pattern']");
-      if (crop.id === "kelapa_sawit") {
-        patterns[1].checked = true; // Triangular for sawit
-      } else {
-        patterns[0].checked = true; // Rectangular for others
-      }
-      updateCropSpacingInfo(crop);
-      calculatePop();
-    }
+    applyCropDefaults(crop);
   });
 
   // Initialize spacing info
   const initialCrop = db.CROPS.find(c => c.id === cropSelect.value);
-  updateCropSpacingInfo(initialCrop);
+  applyCropDefaults(initialCrop);
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -271,44 +275,71 @@ export function initPopulationModule(container, state, db) {
 
   function drawField(spacingRow, spacingCol, pattern) {
     const ctx = canvas.getContext("2d");
-    const width = canvas.width;
-    const height = canvas.height;
+    const width = 400;
+    const height = 400;
     
+    // Set up device pixel ratio for sharp rendering on retina screens
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = width * dpr;
+    canvas.height = height * dpr;
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.scale(dpr, dpr);
+
     // Clear canvas
     ctx.clearRect(0, 0, width, height);
 
-    // Draw soil background
-    ctx.fillStyle = state.theme === "dark" ? "#1e251c" : "#f1ebd9";
-    ctx.fillRect(0, 0, width, height);
+    // Layout configuration
+    const fieldX = 50;
+    const fieldY = 30;
+    const fieldW = 320;
+    const fieldH = 320;
+    
+    const sampleSize = 5.0; // meters
+    const scale = fieldW / sampleSize; // pixels per meter
 
-    // Draw grid border
+    // 1. Draw soil background
+    ctx.fillStyle = state.theme === "dark" ? "#1e251c" : "#f1ebd9";
+    ctx.fillRect(fieldX, fieldY, fieldW, fieldH);
+
+    // 2. Draw dotted grid lines inside the field every 1 meter
+    ctx.save();
+    ctx.strokeStyle = state.theme === "dark" ? "rgba(52, 74, 48, 0.4)" : "rgba(208, 195, 171, 0.5)";
+    ctx.setLineDash([4, 4]);
+    ctx.lineWidth = 1;
+    for (let m = 1; m < 5; m++) {
+      // Vertical grid line
+      ctx.beginPath();
+      ctx.moveTo(fieldX + m * scale, fieldY);
+      ctx.lineTo(fieldX + m * scale, fieldY + fieldH);
+      ctx.stroke();
+      
+      // Horizontal grid line
+      ctx.beginPath();
+      ctx.moveTo(fieldX, fieldY + m * scale);
+      ctx.lineTo(fieldX + fieldW, fieldY + m * scale);
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    // 3. Draw grid border
     ctx.strokeStyle = state.theme === "dark" ? "#344a30" : "#d0c3ab";
     ctx.lineWidth = 2;
-    ctx.strokeRect(0, 0, width, height);
+    ctx.strokeRect(fieldX, fieldY, fieldW, fieldH);
 
-    // Sample size: 5 meters x 5 meters
-    const sampleSize = 5.0; // meters
-    const scale = width / sampleSize; // pixels per meter
-
-    // Plant style
-    ctx.fillStyle = "#2ecc71"; // Eco green
-    ctx.shadowBlur = 8;
-    ctx.shadowColor = "rgba(46, 204, 113, 0.4)";
-
+    // 4. Draw Plants
     let plantRadius = 6;
     if (spacingRow < 0.2 || spacingCol < 0.2) plantRadius = 3;
     else if (spacingRow > 2.0 || spacingCol > 2.0) plantRadius = 12;
 
     if (pattern === "rectangular") {
-      for (let r = 0; r <= sampleSize; r += spacingRow) {
-        for (let c = 0; c <= sampleSize; c += spacingCol) {
-          const px = c * scale;
-          const py = r * scale;
+      for (let r = 0; r <= sampleSize + 0.001; r += spacingRow) {
+        for (let c = 0; c <= sampleSize + 0.001; c += spacingCol) {
+          const px = fieldX + c * scale;
+          const py = fieldY + r * scale;
           
-          if (px >= 0 && px <= width && py >= 0 && py <= height) {
-            ctx.beginPath();
-            ctx.arc(px, py, plantRadius, 0, 2 * Math.PI);
-            ctx.fill();
+          if (px >= fieldX && px <= fieldX + fieldW && py >= fieldY && py <= fieldY + fieldH) {
+            drawPlant(ctx, px, py, plantRadius);
           }
         }
       }
@@ -318,29 +349,255 @@ export function initPopulationModule(container, state, db) {
       const vSpacing = spacingRow * Math.sin(Math.PI / 3); // Vertical distance of row centers
 
       let rowIndex = 0;
-      for (let y = 0; y <= sampleSize + vSpacing; y += vSpacing) {
+      for (let y = 0; y <= sampleSize + vSpacing + 0.001; y += vSpacing) {
         const offset = (rowIndex % 2 === 0) ? 0 : hSpacing / 2;
-        for (let x = -offset; x <= sampleSize + hSpacing; x += hSpacing) {
-          const px = x * scale;
-          const py = y * scale;
+        for (let x = -offset; x <= sampleSize + hSpacing + 0.001; x += hSpacing) {
+          const px = fieldX + x * scale;
+          const py = fieldY + y * scale;
           
-          if (px >= 0 && px <= width && py >= 0 && py <= height) {
-            ctx.beginPath();
-            ctx.arc(px, py, plantRadius, 0, 2 * Math.PI);
-            ctx.fill();
+          if (px >= fieldX && px <= fieldX + fieldW && py >= fieldY && py <= fieldY + fieldH) {
+            drawPlant(ctx, px, py, plantRadius);
           }
         }
         rowIndex++;
       }
     }
 
-    // Reset shadow
-    ctx.shadowBlur = 0;
+    // 5. Draw Dimension Lines (Arrows & Spacing values)
+    const px1 = fieldX;
+    const py1 = fieldY;
+    const px2 = fieldX + spacingCol * scale;
+    const py2 = fieldY + spacingRow * scale;
 
-    // Draw Scale Text
-    ctx.fillStyle = state.theme === "dark" ? "#8ca388" : "#6c5d43";
-    ctx.font = "12px sans-serif";
-    ctx.fillText("Sampel Lapangan: 5m x 5m", 15, 25);
+    if (spacingCol * scale > 18 && px2 <= fieldX + fieldW) {
+      const colLabel = `${spacingCol} m`;
+      drawDimensionLine(ctx, px1, py1, px2, py1, colLabel, 20);
+    }
+
+    if (pattern === "rectangular") {
+      if (spacingRow * scale > 18 && py2 <= fieldY + fieldH) {
+        const rowLabel = `${spacingRow} m`;
+        drawDimensionLine(ctx, px1, py1, px1, py2, rowLabel, -20);
+      }
+    } else {
+      const vSpacing = spacingRow * Math.sin(Math.PI / 3);
+      const py2Tri = fieldY + vSpacing * scale;
+      if (vSpacing * scale > 18 && py2Tri <= fieldY + fieldH) {
+        const rowLabel = `${spacingRow} m`;
+        const diagX = px1 + (spacingCol / 2) * scale;
+        if (diagX <= fieldX + fieldW) {
+          drawDimensionLine(ctx, px1, py1, diagX, py2Tri, rowLabel, 15);
+        } else {
+          drawDimensionLine(ctx, px1, py1, px1, py2Tri, rowLabel, -20);
+        }
+      }
+    }
+
+    // 6. Draw Compass Rose
+    drawCompass(ctx, fieldX + fieldW - 25, fieldY + 25);
+
+    // 7. Draw Rulers around the field
+    const rulerColor = state.theme === "dark" ? "#8ca388" : "#6c5d43";
+    ctx.strokeStyle = rulerColor;
+    ctx.fillStyle = rulerColor;
+    ctx.lineWidth = 1.5;
+
+    // Bottom horizontal ruler line
+    ctx.beginPath();
+    ctx.moveTo(fieldX, fieldY + fieldH + 10);
+    ctx.lineTo(fieldX + fieldW, fieldY + fieldH + 10);
+    ctx.stroke();
+
+    // Left vertical ruler line
+    ctx.beginPath();
+    ctx.moveTo(fieldX - 10, fieldY);
+    ctx.lineTo(fieldX - 10, fieldY + fieldH);
+    ctx.stroke();
+
+    // Draw ticks & labels
+    ctx.font = "10px sans-serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "top";
+    for (let m = 0; m <= 5; m++) {
+      const x = fieldX + m * scale;
+      ctx.beginPath();
+      ctx.moveTo(x, fieldY + fieldH + 10);
+      ctx.lineTo(x, fieldY + fieldH + 15);
+      ctx.stroke();
+      ctx.fillText(`${m}m`, x, fieldY + fieldH + 18);
+    }
+
+    ctx.textAlign = "right";
+    ctx.textBaseline = "middle";
+    for (let m = 0; m <= 5; m++) {
+      const y = fieldY + fieldH - m * scale;
+      ctx.beginPath();
+      ctx.moveTo(fieldX - 10, y);
+      ctx.lineTo(fieldX - 15, y);
+      ctx.stroke();
+      ctx.fillText(`${m}m`, fieldX - 18, y);
+    }
+
+    // Ruler labels
+    ctx.save();
+    ctx.fillStyle = rulerColor;
+    ctx.font = "italic 11px sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("← Lebar Sampel Lahan (5 Meter) →", fieldX + fieldW / 2, fieldY + fieldH + 34);
+    
+    ctx.translate(fieldX - 32, fieldY + fieldH / 2);
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText("← Panjang Sampel Lahan (5 Meter) →", 0, 0);
+    ctx.restore();
+
+    // Helper functions
+    function drawPlant(ctx, x, y, radius) {
+      if (spacingCol < 0.25 || spacingRow < 0.25) {
+        ctx.beginPath();
+        ctx.arc(x, y, radius, 0, 2 * Math.PI);
+        ctx.fillStyle = "#2ecc71";
+        ctx.shadowBlur = 4;
+        ctx.shadowColor = "rgba(46, 204, 113, 0.4)";
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      } else {
+        drawLeaf(ctx, x, y, radius * 1.5);
+      }
+    }
+
+    function drawLeaf(ctx, x, y, size) {
+      ctx.save();
+      ctx.translate(x, y);
+      ctx.shadowBlur = 4;
+      ctx.shadowColor = "rgba(0, 0, 0, 0.15)";
+      
+      // Left leaf
+      ctx.fillStyle = "#27ae60";
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.bezierCurveTo(-size * 0.8, -size * 0.2, -size * 0.5, -size * 0.9, 0, -size);
+      ctx.bezierCurveTo(size * 0.2, -size * 0.5, 0, -size * 0.2, 0, 0);
+      ctx.fill();
+
+      // Right leaf
+      ctx.fillStyle = "#2ecc71";
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.bezierCurveTo(size * 0.8, -size * 0.2, size * 0.5, -size * 0.9, 0, -size);
+      ctx.bezierCurveTo(-size * 0.2, -size * 0.5, 0, -size * 0.2, 0, 0);
+      ctx.fill();
+      
+      // Bud
+      ctx.fillStyle = "#a3e4d7";
+      ctx.beginPath();
+      ctx.arc(0, -size * 0.2, size * 0.15, 0, 2 * Math.PI);
+      ctx.fill();
+
+      ctx.restore();
+    }
+
+    function drawDimensionLine(ctx, x1, y1, x2, y2, text, offset) {
+      ctx.save();
+      ctx.strokeStyle = "#e74c3c";
+      ctx.fillStyle = "#e74c3c";
+      ctx.lineWidth = 1.5;
+      ctx.font = "bold 10px sans-serif";
+
+      const dx = x2 - x1;
+      const dy = y2 - y1;
+      const len = Math.sqrt(dx * dx + dy * dy);
+      if (len === 0) {
+        ctx.restore();
+        return;
+      }
+      
+      const px = -dy / len;
+      const py = dx / len;
+
+      const ox1 = x1 + px * offset;
+      const oy1 = y1 + py * offset;
+      const ox2 = x2 + px * offset;
+      const oy2 = y2 + py * offset;
+
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(ox1, oy1);
+      ctx.moveTo(x2, y2);
+      ctx.lineTo(ox2, oy2);
+      ctx.strokeStyle = state.theme === "dark" ? "rgba(231, 76, 60, 0.25)" : "rgba(231, 76, 60, 0.35)";
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(ox1, oy1);
+      ctx.lineTo(ox2, oy2);
+      ctx.strokeStyle = "#e74c3c";
+      ctx.stroke();
+
+      drawArrowhead(ctx, ox1, oy1, ox2, oy2, 5);
+      drawArrowhead(ctx, ox2, oy2, ox1, oy1, 5);
+
+      const cx = (ox1 + ox2) / 2;
+      const cy = (oy1 + oy2) / 2;
+      
+      const textWidth = ctx.measureText(text).width + 6;
+      ctx.fillStyle = state.theme === "dark" ? "#1e251c" : "#f1ebd9";
+      ctx.fillRect(cx - textWidth/2, cy - 8, textWidth, 16);
+      
+      ctx.strokeStyle = "#e74c3c";
+      ctx.strokeRect(cx - textWidth/2, cy - 8, textWidth, 16);
+      
+      ctx.fillStyle = "#e74c3c";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(text, cx, cy);
+      
+      ctx.restore();
+    }
+
+    function drawArrowhead(ctx, x1, y1, x2, y2, size) {
+      const angle = Math.atan2(y2 - y1, x2 - x1);
+      ctx.beginPath();
+      ctx.moveTo(x2, y2);
+      ctx.lineTo(x2 - size * Math.cos(angle - Math.PI / 6), y2 - size * Math.sin(angle - Math.PI / 6));
+      ctx.lineTo(x2 - size * Math.cos(angle + Math.PI / 6), y2 - size * Math.sin(angle + Math.PI / 6));
+      ctx.closePath();
+      ctx.fill();
+    }
+
+    function drawCompass(ctx, x, y) {
+      ctx.save();
+      ctx.translate(x, y);
+      
+      ctx.strokeStyle = state.theme === "dark" ? "#8ca388" : "#6c5d43";
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(0, 0, 12, 0, 2 * Math.PI);
+      ctx.stroke();
+
+      ctx.fillStyle = "#e74c3c";
+      ctx.beginPath();
+      ctx.moveTo(0, -14);
+      ctx.lineTo(3, -3);
+      ctx.lineTo(-3, -3);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.fillStyle = state.theme === "dark" ? "#556b52" : "#a89b84";
+      ctx.beginPath();
+      ctx.moveTo(0, 14);
+      ctx.lineTo(3, 3);
+      ctx.lineTo(-3, 3);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.fillStyle = state.theme === "dark" ? "#ffffff" : "#141a12";
+      ctx.font = "bold 8px sans-serif";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "bottom";
+      ctx.fillText("U", 0, -15);
+
+      ctx.restore();
+    }
   }
 
   // Trigger initial calculation

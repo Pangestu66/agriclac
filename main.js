@@ -3,11 +3,11 @@
  * Decoupled Frontend Version (Root level)
  */
 
-import { CROPS, FERTILIZERS, GENERAL_METRICS } from "./db.js";
-import { initPopulationModule } from "./modules/population.js";
-import { initFertilizerModule } from "./modules/fertilizer.js";
-import { initPesticideModule } from "./modules/pesticide.js";
-import { initEconomicsModule } from "./modules/economics.js";
+import { CROPS, FERTILIZERS, GENERAL_METRICS } from "./db.js?v=3";
+import { initPopulationModule } from "./modules/population.js?v=3";
+import { initFertilizerModule } from "./modules/fertilizer.js?v=3";
+import { initPesticideModule } from "./modules/pesticide.js?v=3";
+import { initEconomicsModule } from "./modules/economics.js?v=3";
 
 // ─── API Service Layer ───────────────────────────────────────
 class ApiService {
@@ -126,8 +126,13 @@ class AgriCalcApp {
       language: "id", // "id" or "en"
       activeTab: "dashboard",
       history: [],
+      selectedCropId: "padi",
       saveCalculation: (calcObj) => this.saveCalculation(calcObj),
-      deleteCalculation: (id) => this.deleteCalculation(id)
+      deleteCalculation: (id) => this.deleteCalculation(id),
+      updateCropId: (cropId) => {
+        this.state.selectedCropId = cropId;
+        this.saveState();
+      }
     };
 
     this.translations = {
@@ -220,6 +225,7 @@ class AgriCalcApp {
         this.state.theme = parsed.theme || "light";
         this.state.language = parsed.language || "id";
         this.state.activeTab = parsed.activeTab || "dashboard";
+        this.state.selectedCropId = parsed.selectedCropId || "padi";
       } catch (e) {
         console.error("Failed parsing preferences", e);
       }
@@ -236,7 +242,6 @@ class AgriCalcApp {
 
     // Apply active theme to document body
     document.body.setAttribute("data-theme", this.state.theme);
-    document.getElementById("theme-toggle").checked = this.state.theme === "light";
     document.getElementById("lang-select").value = this.state.language;
   }
 
@@ -244,16 +249,17 @@ class AgriCalcApp {
     localStorage.setItem("agricalc_preferences", JSON.stringify({
       theme: this.state.theme,
       language: this.state.language,
-      activeTab: this.state.activeTab
+      activeTab: this.state.activeTab,
+      selectedCropId: this.state.selectedCropId
     }));
     localStorage.setItem("agricalc_history", JSON.stringify(this.state.history));
   }
 
   bindGlobalEvents() {
-    // Theme Toggler
-    const themeCheckbox = document.getElementById("theme-toggle");
-    themeCheckbox.addEventListener("change", (e) => {
-      this.state.theme = e.target.checked ? "light" : "dark";
+    // Theme Toggler Button
+    const themeBtn = document.getElementById("theme-toggle");
+    themeBtn.addEventListener("click", () => {
+      this.state.theme = this.state.theme === "light" ? "dark" : "light";
       document.body.setAttribute("data-theme", this.state.theme);
       this.saveState();
       

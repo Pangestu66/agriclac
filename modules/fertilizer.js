@@ -17,7 +17,7 @@ export function initFertilizerModule(container, state, db) {
           <div class="form-group">
             <label for="fert-crop">Pilih Komoditas:</label>
             <select id="fert-crop" name="cropId">
-              ${db.CROPS.map(c => `<option value="${c.id}">${c.name}</option>`).join('')}
+              ${db.CROPS.map(c => `<option value="${c.id}" ${state.selectedCropId === c.id ? 'selected' : ''}>${c.name}</option>`).join('')}
             </select>
             <div id="fert-crop-info" class="helper-info-box" style="margin-top: 8px;"></div>
           </div>
@@ -154,16 +154,20 @@ export function initFertilizerModule(container, state, db) {
          <span style="font-weight: normal; opacity: 0.85;">(Base recommendation: ${crop.recommendationN}-${crop.recommendationP}-${crop.recommendationK} kg/ha). Parameters below adjusted automatically.</span>`;
   }
 
+  function applyFertCropDefaults(crop) {
+    if (!crop) return;
+    reqNInput.value = crop.recommendationN;
+    reqPInput.value = crop.recommendationP;
+    reqKInput.value = crop.recommendationK;
+    updateFertCropInfo(crop);
+    calculateFert();
+  }
+
   // Load crop defaults on change
   cropSelect.addEventListener("change", (e) => {
+    if (state.updateCropId) state.updateCropId(e.target.value);
     const crop = db.CROPS.find(c => c.id === e.target.value);
-    if (crop) {
-      reqNInput.value = crop.recommendationN;
-      reqPInput.value = crop.recommendationP;
-      reqKInput.value = crop.recommendationK;
-      updateFertCropInfo(crop);
-      calculateFert();
-    }
+    applyFertCropDefaults(crop);
   });
 
   // Re-calculate recommended summary on area change
@@ -176,8 +180,9 @@ export function initFertilizerModule(container, state, db) {
   areaValInput.addEventListener("input", triggerUpdateInfo);
   areaUnitSelect.addEventListener("change", triggerUpdateInfo);
 
-  // Initialize recommendation banner
-  triggerUpdateInfo();
+  // Initialize recommendation banner & defaults
+  const initialCrop = db.CROPS.find(c => c.id === cropSelect.value);
+  applyFertCropDefaults(initialCrop);
 
   form.addEventListener("submit", (e) => {
     e.preventDefault();

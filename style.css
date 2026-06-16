@@ -3,7 +3,7 @@
  * Design Style: Eco-Glassmorphism
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
 
 :root {
   /* Lawncare Light Cream Theme (Default) */
@@ -30,7 +30,8 @@
   --radius-lg: 20px;
   --radius-md: 12px;
   --radius-sm: 6px;
-  --font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-tech: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
   --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
@@ -100,15 +101,19 @@ body {
 }
 
 .logo-badge {
-  background: var(--primary); /* lime green */
+  background: linear-gradient(135deg, var(--accent), hsl(142, 72%, 28%));
+  color: #ffffff;
   width: 40px;
   height: 40px;
   border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
   box-shadow: 0 4px 15px var(--primary-glow);
+  transition: var(--transition-smooth);
+}
+.logo-badge svg {
+  display: block;
 }
 
 .brand-text h1 {
@@ -752,6 +757,7 @@ input[type="range"] {
 }
 
 .metric-value {
+  font-family: var(--font-tech);
   font-size: 38px;
   font-weight: 800;
   margin: 5px 0;
@@ -789,6 +795,7 @@ input[type="range"] {
 }
 
 .sub-value {
+  font-family: var(--font-tech);
   font-size: 18px;
   font-weight: 700;
   margin: 2px 0;

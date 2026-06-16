@@ -5,35 +5,54 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="AgriCalc - Platform kalkulator pertanian modern berbasis data Indonesia. Hitung kebutuhan pupuk, benih, air, dan keuntungan usaha tani dalam hitungan detik.">
   <title>AgriCalc - Platform Kalkulator Pertanian Berbasis Data Indonesia</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="landing.css">
 </head>
 <body>
 
+  <!-- Background Decorative Glowing Elements (Linear/Vercel Style) -->
+  <div class="gradient-blur glow-1"></div>
+  <div class="gradient-blur glow-2"></div>
+  <div class="gradient-blur glow-3"></div>
+
   <!-- App Header / Navigation -->
   <header class="app-header" id="app-header">
-    <a href="index.html" class="brand-section">
-      <div class="logo-badge">🚜</div>
-      <div class="brand-text">
-        <h1>AgriCalc</h1>
-        <p>Pertanian Presisi Modern</p>
+    <div class="header-container">
+      <a href="index.html" class="brand-section">
+        <div class="logo-badge">
+          <svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.5 1 9.8a7 7 0 0 1-9 8.2z"></path>
+            <path d="M9 22v-4h4"></path>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <h1>AgriCalc</h1>
+          <p>Pertanian Presisi Modern</p>
+        </div>
+      </a>
+      
+      <nav class="nav-desktop">
+        <ul class="nav-menu">
+          <li><a href="#kalkulator" class="nav-link">Kalkulator <span class="nav-badge">5 Tools</span></a></li>
+          <li><a href="#cara-kerja" class="nav-link">Cara Kerja</a></li>
+          <li><a href="#sumber-data" class="nav-link">Sumber Data</a></li>
+          <li><a href="#faq" class="nav-link">FAQ</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="app.html" class="btn-cta">
+          <span>Buka Aplikasi</span>
+          <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+        <!-- Mobile hamburger -->
+        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Buka menu navigasi" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
       </div>
-    </a>
-    
-    <nav>
-      <ul class="nav-menu">
-        <li><a href="#kalkulator" class="nav-link">Kalkulator</a></li>
-        <li><a href="#cara-kerja" class="nav-link">Cara Kerja</a></li>
-        <li><a href="#sumber-data" class="nav-link">Sumber Data</a></li>
-        <li><a href="#faq" class="nav-link">FAQ</a></li>
-      </ul>
-    </nav>
-
-    <!-- Mobile hamburger -->
-    <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Buka menu navigasi">
-      <span></span><span></span><span></span>
-    </button>
-
-    <a href="app.html" class="btn-cta">Buka Kalkulator</a>
+    </div>
   </header>
 
   <!-- Mobile nav overlay -->
@@ -43,199 +62,414 @@
       <li><a href="#cara-kerja">Cara Kerja</a></li>
       <li><a href="#sumber-data">Sumber Data</a></li>
       <li><a href="#faq">FAQ</a></li>
-      <li><a href="app.html" class="mobile-cta">Buka Kalkulator</a></li>
+      <li>
+        <a href="app.html" class="mobile-cta">
+          <span>Mulai Menghitung</span>
+          <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </li>
     </ul>
   </div>
 
   <!-- ════════════════════════════════════════════════════════
-       1. HERO SECTION
+       1. HERO SECTION (Split SaaS Grid Layout)
        ════════════════════════════════════════════════════════ -->
   <section class="hero-section" id="home">
-    <div class="hero-content">
-      <span class="hero-badge">🌾 Agricultural Decision Support System</span>
-      <h2>Hitung kebutuhan pupuk, benih, air, dan keuntungan usaha tani dalam hitungan detik.</h2>
-      <p>AgriCalc membantu petani, mahasiswa, dan pelaku agribisnis mengambil keputusan pertanian yang lebih cepat, akurat, dan berbasis data Indonesia.</p>
-      <div class="hero-actions">
-        <a href="app.html" class="btn-hero-primary" id="cta-mulai-hitung">🚀 Mulai Menghitung</a>
-        <a href="#kalkulator" class="btn-hero-secondary" id="cta-lihat-kalkulator">Lihat Semua Kalkulator ↓</a>
-      </div>
-    </div>
+    <div class="dot-grid-bg"></div>
+    <div class="section-container hero-grid-container">
+      <div class="hero-content">
+        <div class="hero-badge-container">
+          <span class="hero-badge">
+            <span class="badge-dot"></span>
+            Agricultural Decision Support System v2.0
+          </span>
+        </div>
+        <h2 class="hero-title">Pertanian Presisi Berbasis Data, Bukan Tebakan.</h2>
+        <p class="hero-description">AgriCalc menyederhanakan perhitungan dosis pupuk, kebutuhan benih, kapasitas irigasi air, dan proyeksi keuntungan usaha tani Indonesia secara ilmiah dalam hitungan detik.</p>
+        
+        <div class="hero-actions">
+          <a href="app.html" class="btn-hero-primary" id="cta-mulai-hitung">
+            <span>Mulai Perhitungan</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </a>
+          <a href="#kalkulator" class="btn-hero-secondary" id="cta-lihat-kalkulator">
+            <span>Pelajari Fitur</span>
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </a>
+        </div>
 
-    <div class="wave-divider">
-      <svg data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 120" preserveAspectRatio="none">
-        <path d="M985.66,92.83C906.67,72,823.78,31,743.84,14.19c-82.26-17.34-168.06-16.33-250.45.39-57.84,11.73-114,31.07-172,41.86A600.21,600.21,0,0,1,0,27.35V120H1200V95.8C1132.19,118.92,1055.71,111.31,985.66,92.83Z" class="shape-fill"></path>
-      </svg>
+        <div class="hero-meta">
+          <div class="meta-item">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            <span>Akses 100% Gratis</span>
+          </div>
+          <div class="meta-item">
+            <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2.5" fill="none"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            <span>Rujukan Standardisasi Nasional</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Side Dashboard Mockup Representation -->
+      <div class="hero-visual-block">
+        <div class="mockup-container floating">
+          <div class="dashboard-mockup">
+            <div class="mockup-header">
+              <div class="mockup-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <div class="mockup-url">agricalc.id/app</div>
+            </div>
+            <div class="mockup-body">
+              <img src="hero-bg.png" alt="AgriCalc Dashboard Preview" class="mockup-image">
+            </div>
+          </div>
+          
+          <!-- Floating Human Micro-Data Widgets (Outside overflow wrapper to prevent clipping) -->
+          <div class="floating-widget widget-1">
+            <div class="widget-icon">⚡</div>
+            <div class="widget-text">
+              <span class="widget-title">Respon Hitung</span>
+              <span class="widget-value font-tech">&lt; 300ms</span>
+            </div>
+          </div>
+          
+          <div class="floating-widget widget-2">
+            <div class="widget-icon">🌱</div>
+            <div class="widget-text">
+              <span class="widget-title">Database Rujukan</span>
+              <span class="widget-value font-tech">BPS & Kementan</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- ════════════════════════════════════════════════════════
-       2. QUICK STATISTICS
+       2. QUICK STATISTICS (Dashboard metrics theme)
        ════════════════════════════════════════════════════════ -->
   <section class="stats-section" id="stats">
-    <div class="stats-grid">
-      <div class="stat-card">
-        <span class="stat-icon">🌱</span>
-        <span class="stat-number">5</span>
-        <span class="stat-label">Kalkulator Utama</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-icon">📍</span>
-        <span class="stat-number">ID</span>
-        <span class="stat-label">Data Pertanian Indonesia</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-icon">📊</span>
-        <span class="stat-number">✓</span>
-        <span class="stat-label">Rekomendasi Berbasis Data</span>
-      </div>
-      <div class="stat-card">
-        <span class="stat-icon">⚡</span>
-        <span class="stat-number">&lt;1s</span>
-        <span class="stat-label">Hasil Hitung Instan</span>
+    <div class="section-container">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-icon-badge">🎯</span>
+            <span class="stat-number font-tech">5</span>
+          </div>
+          <div class="stat-info">
+            <span class="stat-label">Kalkulator Spesialis</span>
+            <span class="stat-sub">Pupuk, Benih, Air, Laba, BEP</span>
+          </div>
+          <!-- Simple CSS Progress Visualization to fill space -->
+          <div class="stat-visual-meter">
+            <span class="meter-bar" style="width: 100%"></span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-icon-badge">🇮🇩</span>
+            <span class="stat-number font-tech">SNI</span>
+          </div>
+          <div class="stat-info">
+            <span class="stat-label">Data Terstandardisasi</span>
+            <span class="stat-sub">Sesuai Kebijakan Nasional</span>
+          </div>
+          <div class="stat-visual-meter">
+            <span class="meter-bar" style="width: 90%; background: var(--accent);"></span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-icon-badge">📊</span>
+            <span class="stat-number font-tech">10+</span>
+          </div>
+          <div class="stat-info">
+            <span class="stat-label">Komoditas Utama</span>
+            <span class="stat-sub">Tanaman Pangan & Hortikultura</span>
+          </div>
+          <div class="stat-visual-meter">
+            <span class="meter-bar" style="width: 80%"></span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-header">
+            <span class="stat-icon-badge">⚡</span>
+            <span class="stat-number font-tech">&lt;0.5s</span>
+          </div>
+          <div class="stat-info">
+            <span class="stat-label">Kecepatan Eksekusi</span>
+            <span class="stat-sub">Client-side Client-computing</span>
+          </div>
+          <div class="stat-visual-meter">
+            <span class="meter-bar" style="width: 98%; background: var(--accent);"></span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- ════════════════════════════════════════════════════════
-       3. KALKULATOR SECTION
+       3. KALKULATOR SECTION (SaaS Grid layout)
        ════════════════════════════════════════════════════════ -->
   <section class="calc-section" id="kalkulator">
+    <div class="dot-grid-bg"></div>
     <div class="section-container">
       <div class="section-header">
         <span class="section-badge">Fitur Utama</span>
-        <h2>5 Kalkulator Pertanian</h2>
-        <p>Pilih kalkulator yang sesuai dengan kebutuhan Anda. Semua perhitungan menggunakan data pertanian Indonesia.</p>
+        <h2>Modul Kalkulator Presisi</h2>
+        <p>Akses rangkaian alat kalkulasi agribisnis kami. Didesain secara detail untuk menjawab kebutuhan krusial siklus tani Anda.</p>
       </div>
 
       <div class="calc-grid">
         <!-- Card 1: Pupuk -->
         <a href="app.html?tab=fertilizer" class="calc-card" id="card-pupuk">
-          <div class="calc-card-icon">🌱</div>
+          <div class="calc-card-glow"></div>
+          <div class="calc-card-header">
+            <div class="calc-card-icon-wrapper">
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="card-icon">
+                <path d="M12 22V12"></path>
+                <path d="M12 12c-2-2.67-4-3.33-7-2 3 6 7 2 7 2z"></path>
+                <path d="M12 14c2-2.67 4-3.33 7-2-3 6-7 2-7 2z"></path>
+                <path d="M12 7.5c1.5-2 3-2.5 5.5-1.5-2.5 4.5-5.5 1.5-5.5 1.5z"></path>
+              </svg>
+            </div>
+            <span class="card-pill">NPK & Urea</span>
+          </div>
           <h3>Kalkulator Pupuk</h3>
-          <p>Hitung kebutuhan pupuk berdasarkan jenis tanaman, lokasi, dan luas lahan.</p>
-          <span class="calc-card-cta">Gunakan Sekarang →</span>
+          <p>Kalkulasi dosis pupuk NPK tunggal maupun majemuk berdasarkan anjuran lahan dan target komoditas Anda.</p>
+          <div class="card-footer-data">
+            <span class="data-tag">Standard SNI</span>
+            <span class="data-tag font-tech">5 Komoditas</span>
+          </div>
+          <span class="calc-card-cta">
+            <span>Gunakan Modul</span>
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
         </a>
 
         <!-- Card 2: Benih -->
         <a href="app.html?tab=population" class="calc-card" id="card-benih">
-          <div class="calc-card-icon">🌾</div>
-          <h3>Kalkulator Benih</h3>
-          <p>Hitung kebutuhan benih dan rekomendasi varietas yang sesuai.</p>
-          <span class="calc-card-cta">Gunakan Sekarang →</span>
+          <div class="calc-card-glow"></div>
+          <div class="calc-card-header">
+            <div class="calc-card-icon-wrapper">
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="card-icon">
+                <circle cx="5" cy="5" r="1.5" fill="currentColor"></circle>
+                <circle cx="12" cy="5" r="1.5" fill="currentColor"></circle>
+                <circle cx="19" cy="5" r="1.5" fill="currentColor"></circle>
+                <circle cx="5" cy="12" r="1.5" fill="currentColor"></circle>
+                <circle cx="12" cy="12" r="1.5" fill="currentColor"></circle>
+                <circle cx="19" cy="12" r="1.5" fill="currentColor"></circle>
+                <circle cx="5" cy="19" r="1.5" fill="currentColor"></circle>
+                <circle cx="12" cy="19" r="1.5" fill="currentColor"></circle>
+                <circle cx="19" cy="19" r="1.5" fill="currentColor"></circle>
+                <path d="M5 5h14v14H5z" stroke-dasharray="2 2"></path>
+              </svg>
+            </div>
+            <span class="card-pill font-tech">Populasi Tanaman</span>
+          </div>
+          <h3>Kalkulator Kerapatan Benih</h3>
+          <p>Estimasi total biji/benih yang dibutuhkan per hektar berdasarkan metode tanam legowo atau tegel.</p>
+          <div class="card-footer-data">
+            <span class="data-tag">Jarak Tanam</span>
+            <span class="data-tag font-tech">Optimal Kerapatan</span>
+          </div>
+          <span class="calc-card-cta">
+            <span>Gunakan Modul</span>
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
         </a>
 
         <!-- Card 3: Air -->
         <a href="app.html?tab=pesticide" class="calc-card" id="card-air">
-          <div class="calc-card-icon">💧</div>
-          <h3>Kalkulator Air</h3>
-          <p>Estimasi kebutuhan air berdasarkan komoditas dan luas lahan.</p>
-          <span class="calc-card-cta">Gunakan Sekarang →</span>
+          <div class="calc-card-glow"></div>
+          <div class="calc-card-header">
+            <div class="calc-card-icon-wrapper">
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="card-icon">
+                <path d="M12 22a7 7 0 0 0 7-7c0-4.3-7-11-7-11S5 10.7 5 15a7 7 0 0 0 7 7z"></path>
+                <path d="M12 18.5a3.5 3.5 0 0 0 3.5-3.5"></path>
+              </svg>
+            </div>
+            <span class="card-pill">Volume Semprot</span>
+          </div>
+          <h3>Kalkulator Air & Spray</h3>
+          <p>Kalibrasi laju alir nozel dan volume tangki semprot herbisida/pestisida agar pemakaian merata & optimal.</p>
+          <div class="card-footer-data">
+            <span class="data-tag">Kalibrasi Nozel</span>
+            <span class="data-tag font-tech">Standard FAO</span>
+          </div>
+          <span class="calc-card-cta">
+            <span>Gunakan Modul</span>
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
         </a>
 
         <!-- Card 4: Keuntungan -->
         <a href="app.html?tab=economics" class="calc-card" id="card-keuntungan">
-          <div class="calc-card-icon">💰</div>
+          <div class="calc-card-glow"></div>
+          <div class="calc-card-header">
+            <div class="calc-card-icon-wrapper">
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="card-icon">
+                <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                <line x1="12" y1="10" x2="12" y2="14"></line>
+                <circle cx="12" cy="12" r="2"></circle>
+                <path d="M6 12h.01M18 12h.01"></path>
+              </svg>
+            </div>
+            <span class="card-pill">Finansial & Investasi</span>
+          </div>
           <h3>Kalkulator Keuntungan</h3>
-          <p>Hitung keuntungan usaha tani dan pendapatan bersih.</p>
-          <span class="calc-card-cta">Gunakan Sekarang →</span>
+          <p>Analisis neraca pengeluaran bibit, pupuk, tenaga kerja, serta proyeksi laba panen berdasarkan harga jual.</p>
+          <div class="card-footer-data">
+            <span class="data-tag">Proyeksi Laba</span>
+            <span class="data-tag font-tech">IDR Rupiah</span>
+          </div>
+          <span class="calc-card-cta">
+            <span>Gunakan Modul</span>
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
         </a>
 
         <!-- Card 5: BEP -->
         <a href="app.html?tab=economics" class="calc-card featured" id="card-bep">
-          <div class="calc-card-icon">📈</div>
-          <h3>Kalkulator BEP</h3>
-          <p>Hitung titik impas usaha tani secara cepat.</p>
-          <span class="calc-card-cta">Gunakan Sekarang →</span>
+          <div class="calc-card-glow"></div>
+          <div class="calc-card-header">
+            <div class="calc-card-icon-wrapper">
+              <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round" class="card-icon">
+                <path d="M3 3v18h18"></path>
+                <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"></path>
+                <line x1="3" y1="11.5" x2="21" y2="11.5" stroke-dasharray="3 3"></line>
+              </svg>
+            </div>
+            <span class="card-pill badge-featured">Break Even Point</span>
+          </div>
+          <h3>Kalkulator Titik Impas (BEP)</h3>
+          <p>Ketahui volume produksi minimum dan batas harga terendah agar usaha tani Anda tidak rugi.</p>
+          <div class="card-footer-data">
+            <span class="data-tag">Analisis Batas</span>
+            <span class="data-tag font-tech">Minimasi Risiko</span>
+          </div>
+          <span class="calc-card-cta">
+            <span>Gunakan Modul</span>
+            <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2.5" fill="none"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+          </span>
         </a>
       </div>
     </div>
   </section>
 
   <!-- ════════════════════════════════════════════════════════
-       4. CARA KERJA SECTION
+       4. CARA KERJA SECTION (Timeline & Step Pipeline Layout)
        ════════════════════════════════════════════════════════ -->
   <section class="howto-section" id="cara-kerja">
     <div class="section-container">
       <div class="section-header">
-        <span class="section-badge">Panduan</span>
-        <h2>Cara Kerja AgriCalc</h2>
-        <p>Empat langkah sederhana untuk mendapatkan hasil perhitungan pertanian yang akurat.</p>
+        <span class="section-badge">Panduan Ringkas</span>
+        <h2>Bagaimana AgriCalc Membantu Anda</h2>
+        <p>Alur kerja cerdas yang merancang kalkulasi lahan rumit menjadi langkah interaktif yang mudah dipahami.</p>
       </div>
 
       <div class="howto-grid">
         <div class="howto-step">
-          <div class="howto-number">1</div>
-          <div class="howto-icon">🔍</div>
-          <h3>Pilih Kalkulator</h3>
-          <p>Tentukan jenis perhitungan yang Anda butuhkan dari 5 kalkulator yang tersedia.</p>
+          <div class="step-num-bg">01</div>
+          <div class="howto-icon-wrapper">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg>
+          </div>
+          <h3>1. Pilih Modul</h3>
+          <p>Tentukan fokus analisis Anda dari 5 opsi kalkulator yang tersedia pada panel instrumen.</p>
         </div>
-        <div class="howto-connector"></div>
+        
+        <div class="howto-connector-dot"></div>
+        
         <div class="howto-step">
-          <div class="howto-number">2</div>
-          <div class="howto-icon">📝</div>
-          <h3>Masukkan Data</h3>
-          <p>Isi data lahan, komoditas, dan parameter sesuai dengan kebutuhan perhitungan.</p>
+          <div class="step-num-bg">02</div>
+          <div class="howto-icon-wrapper">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M12 20h9"></path><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path></svg>
+          </div>
+          <h3>2. Masukkan Input</h3>
+          <p>Isikan luasan tanah, komoditas, jarak tanam, atau parameter keuangan yang Anda miliki.</p>
         </div>
-        <div class="howto-connector"></div>
+        
+        <div class="howto-connector-dot"></div>
+        
         <div class="howto-step">
-          <div class="howto-number">3</div>
-          <div class="howto-icon">⚙️</div>
-          <h3>Sistem Memproses</h3>
-          <p>Algoritma menghitung berdasarkan database pertanian Indonesia secara instan.</p>
+          <div class="step-num-bg">03</div>
+          <div class="howto-icon-wrapper">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+          </div>
+          <h3>3. Analisis Instan</h3>
+          <p>Sistem mencocokkan input dengan standar agronomi Indonesia secara langsung di browser.</p>
         </div>
-        <div class="howto-connector"></div>
+        
+        <div class="howto-connector-dot"></div>
+        
         <div class="howto-step">
-          <div class="howto-number">4</div>
-          <div class="howto-icon">📊</div>
-          <h3>Lihat Hasil</h3>
-          <p>Dapatkan hasil dan rekomendasi yang siap digunakan untuk pengambilan keputusan.</p>
+          <div class="step-num-bg">04</div>
+          <div class="howto-icon-wrapper">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+          </div>
+          <h3>4. Hasil & Terapkan</h3>
+          <p>Dapatkan angka presisi, simpan riwayat analisis untuk memantau keputusan lapangan.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ════════════════════════════════════════════════════════
-       5. DATA YANG DIGUNAKAN
+       5. DATA YANG DIGUNAKAN (API directory integration layout)
        ════════════════════════════════════════════════════════ -->
   <section class="data-section" id="sumber-data">
     <div class="section-container">
       <div class="section-header">
-        <span class="section-badge">Transparansi</span>
-        <h2>Data yang Menjadi Dasar Perhitungan AgriCalc</h2>
-        <p>Semua perhitungan menggunakan data pertanian Indonesia yang dikurasi dan diverifikasi.</p>
+        <span class="section-badge">Standardisasi</span>
+        <h2>Transparansi Sumber Rujukan Data</h2>
+        <p>Bukan sekadar angka acak. Semua formula AgriCalc diselaraskan dengan rujukan sains agronomi resmi.</p>
       </div>
 
       <div class="data-grid">
         <div class="data-card">
-          <span class="data-icon">💹</span>
-          <h3>Harga Komoditas</h3>
-          <p>Data harga jual berbagai komoditas pertanian di tingkat petani dan pasar.</p>
+          <div class="data-icon-wrapper">💹</div>
+          <h3>Komoditas Pasar</h3>
+          <p>Integrasi rujukan tingkat tren harga rata-rata komoditas pangan dari data BPS dan BPN.</p>
+          <span class="data-source-tag">BPS & BPN RI</span>
         </div>
+        
         <div class="data-card">
-          <span class="data-icon">🧪</span>
-          <h3>Harga Pupuk</h3>
-          <p>Harga pupuk subsidi dan non-subsidi yang berlaku di Indonesia.</p>
+          <div class="data-icon-wrapper">🧪</div>
+          <h3>Rekomendasi NPK</h3>
+          <p>Formulasi dosis tanah disesuaikan dengan Permentan No 40/2007 tentang pemupukan padi & jagung.</p>
+          <span class="data-source-tag">Permentan RI</span>
         </div>
+
         <div class="data-card">
-          <span class="data-icon">🌾</span>
-          <h3>Varietas Benih</h3>
-          <p>Database varietas benih unggul dan rekomendasi penanaman.</p>
+          <div class="data-icon-wrapper">🌾</div>
+          <h3>Varietas Unggul</h3>
+          <p>Spesifikasi benih dikompilasi dari Balai Penelitian Tanaman Pangan (Balitbangtan).</p>
+          <span class="data-source-tag">Balitbangtan</span>
         </div>
+
         <div class="data-card">
-          <span class="data-icon">📋</span>
-          <h3>Rekomendasi Budidaya</h3>
-          <p>Standar budidaya tanaman pangan, hortikultura, dan perkebunan.</p>
+          <div class="data-icon-wrapper">📊</div>
+          <h3>Ubinan Produktivitas</h3>
+          <p>Data target produktivitas rata-rata didasarkan pada statistik panen per wilayah di Indonesia.</p>
+          <span class="data-source-tag">BPS Statistik</span>
         </div>
+
         <div class="data-card">
-          <span class="data-icon">📊</span>
-          <h3>Statistik Pertanian</h3>
-          <p>Data produktivitas, luas tanam, dan hasil panen nasional.</p>
+          <div class="data-icon-wrapper">💧</div>
+          <h3>Kebutuhan Air</h3>
+          <p>Konsep laju alir kalibrasi nozel semprot berbasis pada standar irigasi pertanian FAO.</p>
+          <span class="data-source-tag">FAO Standards</span>
         </div>
       </div>
 
       <div class="data-disclaimer">
-        <span class="disclaimer-icon">ℹ️</span>
-        <p>Data digunakan sebagai referensi dan diperbarui secara berkala. Hasil perhitungan bersifat estimasi dan perlu disesuaikan dengan kondisi lapangan.</p>
+        <div class="disclaimer-glow"></div>
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" class="disclaimer-icon"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+        <p>Aplikasi ADSS ini dirancang untuk simulasi perencanaan berbasis pustaka agronomi. Hasil lapangan dipengaruhi oleh kondisi cuaca mikro setempat, kualitas bibit rill, dan kesuburan tanah.</p>
       </div>
     </div>
   </section>
@@ -248,28 +482,29 @@
       <div class="section-header">
         <span class="section-badge">Keunggulan</span>
         <h2>Mengapa Memilih AgriCalc?</h2>
+        <p>Menggabungkan kepraktisan komputasi lokal dengan data komparatif yang disesuaikan untuk pertanian Indonesia.</p>
       </div>
 
       <div class="why-grid">
         <div class="why-card">
-          <div class="why-icon">🇮🇩</div>
-          <h3>Berbasis Data Indonesia</h3>
-          <p>Seluruh database komoditas, pupuk, dan varietas disesuaikan dengan kondisi pertanian Indonesia.</p>
+          <div class="why-card-icon-wrapper">🇮🇩</div>
+          <h3>Rujukan Lokal Terpadu</h3>
+          <p>Database disesuaikan khusus tanah dan tanaman tropis Indonesia dengan standar Kementerian Pertanian.</p>
         </div>
         <div class="why-card">
-          <div class="why-icon">⚡</div>
-          <h3>Perhitungan Cepat</h3>
-          <p>Hasil perhitungan tersedia dalam hitungan detik tanpa perlu instalasi atau proses yang rumit.</p>
+          <div class="why-card-icon-wrapper">⚡</div>
+          <h3>Kalkulasi Instan</h3>
+          <p>Perhitungan di sisi browser secara client-side, selesai di bawah 500ms tanpa loading server berat.</p>
         </div>
         <div class="why-card">
-          <div class="why-icon">🖱️</div>
-          <h3>Interaktif</h3>
-          <p>Interface yang responsif dengan visualisasi data yang memudahkan pemahaman hasil perhitungan.</p>
+          <div class="why-card-icon-wrapper">🖥️</div>
+          <h3>Antarmuka SaaS Modern</h3>
+          <p>Tampilan bersih berbasis kegunaan tinggi tanpa iklan mengganggu, ramah bagi petani dan profesional.</p>
         </div>
         <div class="why-card">
-          <div class="why-icon">📖</div>
-          <h3>Mudah Dipahami</h3>
-          <p>Dirancang agar dapat digunakan oleh siapa saja, dari petani hingga mahasiswa pertanian.</p>
+          <div class="why-card-icon-wrapper">📂</div>
+          <h3>Penyimpanan Riwayat</h3>
+          <p>Riwayat perhitungan tersimpan di local storage browser Anda, memudahkan perbandingan simulasi.</p>
         </div>
       </div>
     </div>
@@ -281,43 +516,59 @@
   <section class="faq-section" id="faq">
     <div class="section-container">
       <div class="section-header">
-        <span class="section-badge">Bantuan</span>
+        <span class="section-badge">FAQ</span>
         <h2>Pertanyaan yang Sering Diajukan</h2>
+        <p>Butuh penjelasan cepat? Berikut adalah poin-poin yang paling sering ditanyakan mengenai sistem AgriCalc.</p>
       </div>
 
       <div class="faq-list">
         <details class="faq-item" id="faq-1">
-          <summary>Apakah hasil perhitungan AgriCalc akurat?</summary>
+          <summary>
+            <span>Apakah hasil perhitungan AgriCalc 100% akurat?</span>
+            <span class="faq-arrow"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+          </summary>
           <div class="faq-answer">
-            <p>Hasil perhitungan AgriCalc merupakan estimasi berdasarkan data pertanian Indonesia yang telah dikurasi. Hasilnya dapat digunakan sebagai panduan awal, namun tetap perlu disesuaikan dengan kondisi lapangan yang spesifik seperti jenis tanah, iklim mikro, dan ketersediaan sumber daya.</p>
+            <p>Hasil perhitungan AgriCalc menggunakan formula standar nasional (seperti Permentan) dan data produktivitas BPS yang diakui. Hal ini memberikan estimasi awal dengan tingkat kecocokan yang tinggi. Namun, deviasi di lapangan dapat terjadi tergantung kondisi cuaca ekstrem, serangan hama lokal, dan kesehatan fisik tanah yang sebenarnya.</p>
           </div>
         </details>
 
         <details class="faq-item" id="faq-2">
-          <summary>Apakah data diperbarui secara berkala?</summary>
+          <summary>
+            <span>Dari mana AgriCalc memperoleh data harga dan pupuk?</span>
+            <span class="faq-arrow"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+          </summary>
           <div class="faq-answer">
-            <p>Ya. Database AgriCalc diperbarui secara berkala mengikuti perubahan harga komoditas, harga pupuk, dan rekomendasi budidaya terbaru dari sumber-sumber resmi pertanian Indonesia.</p>
+            <p>Data komoditas, harga eceran tertinggi (HET) pupuk bersubsidi, dan sebaran varietas diselaraskan dengan portal resmi Badan Pangan Nasional (BPN), Kementerian Pertanian RI, serta statistik daerah BPS terbaru yang diperbarui secara reguler oleh tim kami.</p>
           </div>
         </details>
 
         <details class="faq-item" id="faq-3">
-          <summary>Siapa yang dapat menggunakan AgriCalc?</summary>
+          <summary>
+            <span>Apakah data perhitungan saya aman dan tersimpan?</span>
+            <span class="faq-arrow"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+          </summary>
           <div class="faq-answer">
-            <p>AgriCalc dirancang untuk semua kalangan yang membutuhkan perhitungan pertanian: petani, mahasiswa pertanian, penyuluh pertanian, pelaku agribisnis, dan siapa saja yang tertarik dengan perencanaan usaha tani.</p>
+            <p>Sangat aman. Seluruh data kalkulator diproses langsung di browser Anda secara client-side. Riwayat perhitungan yang Anda simpan disimpan secara lokal di perangkat Anda (menggunakan LocalStorage) dan tidak diunggah ke server mana pun.</p>
           </div>
         </details>
 
         <details class="faq-item" id="faq-4">
-          <summary>Apakah AgriCalc gratis?</summary>
+          <summary>
+            <span>Apakah ada biaya untuk menggunakan fitur kalkulator?</span>
+            <span class="faq-arrow"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+          </summary>
           <div class="faq-answer">
-            <p>Ya, AgriCalc sepenuhnya gratis dan dapat diakses oleh siapa saja tanpa biaya langganan. Anda dapat langsung menggunakan semua kalkulator tanpa perlu membuat akun.</p>
+            <p>Sama sekali tidak. AgriCalc didedikasikan sebagai aplikasi Decision Support System (ADSS) publik yang dapat diakses penuh secara gratis oleh petani, penyuluh, dosen, mahasiswa pertanian, maupun agribisnis tanpa pembatasan kuota hitung.</p>
           </div>
         </details>
 
         <details class="faq-item" id="faq-5">
-          <summary>Apakah AgriCalc dapat digunakan di smartphone?</summary>
+          <summary>
+            <span>Dapatkah saya menggunakannya tanpa jaringan internet?</span>
+            <span class="faq-arrow"><svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.5" fill="none"><polyline points="6 9 12 15 18 9"></polyline></svg></span>
+          </summary>
           <div class="faq-answer">
-            <p>Ya, AgriCalc didesain secara responsif sehingga dapat digunakan dengan nyaman di smartphone, tablet, maupun komputer desktop. Tidak perlu mengunduh aplikasi tambahan.</p>
+            <p>Untuk akses pertama kali, Anda memerlukan internet. Namun, karena aplikasi ini menggunakan arsitektur statis yang efisien, sekali terunduh di browser, kalkulator dasar dan modul perhitungan utama Anda dapat terus beroperasi meski koneksi internet Anda terputus (offline).</p>
           </div>
         </details>
       </div>
@@ -330,14 +581,19 @@
   <footer class="app-footer">
     <div class="footer-top">
       <div class="footer-brand">
-        <div class="brand-section">
-          <div class="logo-badge">🚜</div>
+        <a href="index.html" class="brand-section">
+          <div class="logo-badge">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 3.5 1 9.8a7 7 0 0 1-9 8.2z"></path>
+              <path d="M9 22v-4h4"></path>
+            </svg>
+          </div>
           <div class="brand-text">
             <h1>AgriCalc</h1>
             <p>Pertanian Presisi Modern</p>
           </div>
-        </div>
-        <p class="footer-desc">Platform kalkulator pertanian digital berbasis data Indonesia untuk membantu petani dan pelaku agribisnis mengambil keputusan yang lebih akurat.</p>
+        </a>
+        <p class="footer-desc">Agricultural Decision Support System (ADSS) modern untuk membantu meningkatkan produktivitas, menghemat biaya pupuk, dan mengoptimalkan hasil panen petani Indonesia.</p>
       </div>
 
       <div class="footer-col">
@@ -366,14 +622,14 @@
         <ul class="footer-list">
           <li><a href="#sumber-data">Sumber Data</a></li>
           <li><a href="#mengapa">Keunggulan</a></li>
-          <li><a href="app.html">Buka Aplikasi</a></li>
+          <li><a href="app.html">Mulai Perhitungan</a></li>
         </ul>
       </div>
     </div>
 
     <div class="footer-bottom">
-      <span>&copy; 2026 AgriCalc. Hak Cipta Dilindungi.</span>
-      <span>Platform Kalkulator Pertanian Berbasis Data Indonesia</span>
+      <span>&copy; 2026 AgriCalc Indonesia. Hak Cipta Dilindungi.</span>
+      <span class="font-tech">Platform Pertanian Presisi & Digitalisasi Tani</span>
     </div>
   </footer>
 
@@ -396,6 +652,8 @@
     const menuBtn = document.getElementById('mobile-menu-btn');
     const mobileOverlay = document.getElementById('mobile-nav-overlay');
     menuBtn.addEventListener('click', () => {
+      const isExpanded = menuBtn.getAttribute('aria-expanded') === 'true';
+      menuBtn.setAttribute('aria-expanded', !isExpanded);
       menuBtn.classList.toggle('open');
       mobileOverlay.classList.toggle('open');
     });
@@ -411,7 +669,7 @@
     });
 
     // Intersection Observer for scroll animations
-    const observerOpts = { threshold: 0.15, rootMargin: '0px 0px -50px 0px' };
+    const observerOpts = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
     const animateObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
